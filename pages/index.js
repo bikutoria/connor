@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Papa from 'papaparse';
-import AppCard from '../components/AppCard-old';
+import AppCard from '../components/AppCard';
 
 const HomePage = () => {
   const [apps, setApps] = useState([]);
