@@ -1,4 +1,12 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+```
+npx create-next-app@latest connor
+cd Dev/connor
+
+npm run dev
+#press Ctrl+C to stop 
+
+npx @next/codemod new-link .
+```
 
 ## Getting Started
 
