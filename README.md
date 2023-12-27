@@ -1,40 +1,43 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 ## Getting Started
 
-First, run the development server:
+```
+# creating
+npx create-next-app@latest connor
+cd Dev/connor
 
-```bash
+# running the server on http://localhost:3000
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# press Ctrl+C to stop 
+
+npx @next/codemod new-link .
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Scructure
+Below is the structure of the added files to the base nextjs project
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+```
+connor/
+├── pages/
+│   ├── index.js
+│   ├── apps/
+│   │   └── [id].js
+│   └── ...
+├── components/
+│   └── AppCard.js
+├── public/
+│   └── data/
+│       └── apps.csv
+└── ...
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+## Next steps
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Use Headless Library to front search
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Pagination of the main page
 
-## Learn More
+Categories based on industries and/or use case
 
-To learn more about Next.js, take a look at the following resources:
+Styling of the [id] page
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+(TBD) Sitemap generation
