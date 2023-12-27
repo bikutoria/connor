@@ -1,0 +1,2660 @@
+App Name,App Description,Industries,App Use Case,Business Value,Logo,Recipe Use Case,ID,Prerequisites,Instructions,Reference,Limitations,Source JSON Configuration,IPE,Rating,Reviews,Created by,Number of installations,Date created,Last edit date
+APP Direct,A cloud service marketplace and management platform.,"Technology, Retail, Telecommunications, Healthcare","platform, service","Revenue Growth Rate, Customer Satisfaction Score (CSAT), Market Penetration Rate, Sales Conversion Rate",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,This example shows how to add products from AppDirect.,1,"To fully understand how to use this example, you must:
+1. Have a Coveo Platform organization.
+2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
+3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Create and configure a REST API source](https://docs.coveo.com/en/1896/) using the example in [SourceJSONConfig.json](https://github.com/coveooss/connectivity-library/blob/master/APP%20Direct/SourceJSONConfig.json). This JSON configuration contains one Endpoint, which gets a list of all products, and one Subquery, which gets more details on the product. Adjust it to your own needs.
+2. Make sure you've changed all placeholders in the configuration with your own values.
+3. [Create the appropiate fields and mappings](https://docs.coveo.com/en/1896/#completion).
+4. [Write an indexing pipeline extension](https://docs.coveo.com/en/1645/) based on the example in [`IPE.py`](https://github.com/coveooss/connectivity-library/blob/master/APP%20Direct/IPE.py).
+5. Check whether your source indexes the desired content properly. You might find you need an additional [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.",[AppDirect API documentation](https://help.appdirect.com/develop/useAppDirectAPI.html),,"{
+  ""Services"": [
+    {
+      ""Url"": ""https://<subdomain>.appdirect.com/api/marketplace/v1"",
+      ""Paging"": {
+        ""PageSize"": 250,
+        ""OffsetStart"": 0,
+        ""OffsetType"": ""item"",
+        ""Parameters"": {
+          ""Limit"": ""count"",
+          ""Offset"": ""start""
+        }
+      },
+      ""Endpoints"": [
+        {
+          ""Path"": ""/listing"",
+          ""Method"": ""GET"",
+          ""ItemType"": ""Listing"",
+          ""Uri"": ""%[href]"",
+          ""ClickableUri"": ""%[url]"",
+          ""Title"": ""%[name]"",
+          ""ModifiedDate"": ""%[lastModified]"",
+          ""Metadata"": {
+            ""addon"": ""%[addon]"",
+            ""billingFrequency"": ""%[billingFrequency]"",
+            ""blurb"": ""%[blurb]"",
+            ""bundleUrls"": ""%[bundleUrls]"",
+            ""buyable"": ""%[buyable]"",
+            ""channelStartingPrice"": ""%[channelStartingPrice]"",
+            ""collectLeads"": ""%[collectLeads]"",
+            ""description"": ""%[description]"",
+            ""developerName"": ""%[developerName]"",
+            ""discountDetails"": ""%[discountDetails]"",
+            ""downloadFileSize"": ""%[downloadFileSize]"",
+            ""featured"": ""%[featured]"",
+            ""featuredSliderPosition"": ""%[featuredSliderPosition]"",
+            ""free"": ""%[free]"",
+            ""freeTrialOrEditionPresent"": ""%[freeTrialOrEditionPresent]"",
+            ""hasLyncToPhone"": ""%[hasLyncToPhone]"",
+            ""hidePricings"": ""%[hidePricings]"",
+            ""href"": ""%[href]"",
+            ""iconSrcset"": ""%[iconSrcset]"",
+            ""iconUrl"": ""%[iconUrl]"",
+            ""id"": ""%[id]"",
+            ""importable"": ""%[importable]"",
+            ""lastModified"": ""%[lastModified]"",
+            ""merchandisingBadges"": ""%[merchandisingBadges]"",
+            ""mobileAppStoreId"": ""%[mobileAppStoreId]"",
+            ""mobileBundleId"": ""%[mobileBundleId]"",
+            ""name"": ""%[name]"",
+            ""numRatings"": ""%[numRatings]"",
+            ""overview"": ""%[overview]"",
+            ""overviewImageSrcset"": ""%[overviewImageSrcset]"",
+            ""overviewImageUrl"": ""%[overviewImageUrl]"",
+            ""popular"": ""%[popular]"",
+            ""popularity"": ""%[popularity]"",
+            ""productRibbon"": ""%[productRibbon]"",
+            ""productType"": ""%[productType]"",
+            ""profileLogoSrcset"": ""%[profileLogoSrcset]"",
+            ""profileLogoUrl"": ""%[profileLogoUrl]"",
+            ""publishedOn"": ""%[publishedOn]"",
+            ""rating"": ""%[rating]"",
+            ""referable"": ""%[referable]"",
+            ""showRating"": ""%[showRating]"",
+            ""sortRank"": ""%[sortRank]"",
+            ""staffPick"": ""%[staffPick]"",
+            ""staffPickSliderPosition"": ""%[staffPickSliderPosition]"",
+            ""startingPrice"": ""%[startingPrice]"",
+            ""supportedLanguages"": ""%[supportedLanguages]"",
+            ""tags"": ""%[tags]"",
+            ""url"": ""%[url]"",
+            ""uuid"": ""%[uuid]"",
+            ""vendorName"": ""%[vendorName]""
+          },
+          ""Headers"": {
+            ""Accept"": ""application/json""
+          },
+          ""QueryParameters"": {},
+          ""SubQueries"": [
+            {
+              ""Path"": ""/products/%[coveo_parent.id]"",
+              ""QueryParameters"": {},
+              ""Method"": ""GET"",
+              ""ModifiedDate"": ""%[lastModified]"",
+              ""Metadata"": {
+                ""features"": ""%[features]"",
+                ""customAttributes"": ""%[customAttributes]""
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}","import json
+ 
+def get_safe_meta_data_value(field):
+    try:
+        return document.get_meta_data_value(field)[-1]
+    except Exception as e:
+        return ''
+ 
+tags_meta = get_safe_meta_data_value(""appdirect_tags"")
+features_meta = get_safe_meta_data_value(""appdirect_prd_features"")
+ 
+def get_children_list(child_array):
+  list=""""
+  for child in child_array:
+    list += child[""name""] + "";""
+  return list
+ 
+def get_featurelist_list(f_array):
+  list=""""
+  for feature in f_array:
+    if feature[""header""]:
+      list += feature[""header""] + "";""
+  return list
+ 
+#Get the fields from the tags json returned by the API
+if tags_meta:
+  tags_array = json.loads(tags_meta)
+  for tag in tags_array: 
+    if (tag['children']):
+      if (tag['name'] == ""Business Size"") OR (tag['name'] == ""Target Markets"") :
+        document.add_meta_data({'adp_company_size' : get_children_list(tag[""children""])})
+      if tag['name'] == ""Industry"":
+        document.add_meta_data({'adp_industry' : get_children_list(tag[""children""])})
+      if tag['name'] == ""Solutions"":
+        document.add_meta_data({'adp_solutions' : get_children_list(tag[""children""])})
+      if tag['name'] == ""Discover Apps"":
+        document.add_meta_data({'adp_discoverapps' : get_children_list(tag[""children""])})
+ 
+#Get the features from the tags json returned by the API
+if features_meta:
+  features_array = json.loads(features_meta)
+  document.add_meta_data({'adp_features' : get_featurelist_list(features_array)})",4.55,40,Coveo Labs,247,2022-02-17,2023-11-21
+Azure Active Directory,Microsoft's cloud-based identity and access management service.,"IT & Services, Financial Services, Healthcare, Education","service, platform","Net Profit Margin, Return on Equity (ROE), Customer Churn Rate, Employee Performance Index",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,This example shows how to index Azure Active Directory users and their information using the Microsoph Graph API.,2,"To fully understand how to use this example, you must:
+1. Have a Coveo Platform organization.
+2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
+3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Create an OAuth app and a client secret](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app). Note your client ID and the newly created client secret.
+2. Under **API Permissions**, grant `User.Read.All` for the application, located under **Microsoft Graph API**. Also add `Group.Read.All` if you want to index groups. Then, click **Grant admin consent for X**.
+3. [Get your tenant ID](https://o365hq.com/faq/how-to-find-your-office-365-tenant-id), as you'll need it to place in the request endpoint.
+4. Create a REST API source and, in the **Authorization** section, provide your client ID and client secret obtained in step 1.
+5. Use the example in [`SourceJSONConfig.json`](https://github.com/coveooss/connectivity-library/blob/master/Azure%20Active%20Directory/SourceJSONConfig.json) as a base to build your source JSON configuration. This example uses OAuth 2.0 authentication. It also contains one Endpoint, which gets a list of the users (with Query Parameters to index the users' information), and one Subquery, which gets the user's photos. Adjust it to your own needs.
+7. Make sure you've changed all placeholders in the configuration with your own values.
+8. [Create the appropiate fields and mappings](https://docs.coveo.com/en/1896/#completion).
+9. Check whether your source indexes the desired content properly. You might find you need an additional [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.",[Azure Active Directory API documentation](https://docs.microsoft.com/en-us/graph/use-the-api),,"{
+  ""Services"": [
+    {
+      ""Authentication"": {
+        ""OAuth"": {
+          ""Headers"": {
+            ""Content-Type"": ""application/x-www-form-urlencoded""
+          },
+          ""Query"": {
+            ""RefreshUrl"": ""https://login.microsoftonline.com/<<YOUR_AZURE_TENANT_ID>>/oauth2/v2.0/token"",
+            ""Method"": ""POST"",
+            ""Parameters"": {
+              ""grant_type"": {
+                ""Type"": ""Payload"",
+                ""Value"": ""client_credentials""
+              },
+              ""client_id"": {
+                ""Type"": ""Payload"",
+                ""Value"": ""@ClientId""
+              },
+              ""client_secret"": {
+                ""Type"": ""Payload"",
+                ""Value"": ""@ClientSecret""
+              },
+              ""scope"": {
+                ""Type"": ""Payload"",
+                ""Value"": ""https://graph.microsoft.com/.default""
+              }
+            }
+          },
+          ""Response"": {
+            ""AccessToken"": ""access_token"",
+            ""SupportsRefreshToken"": ""false"",
+            ""ExpiresIn"": ""expires_in"",
+            ""TokenType"": ""token_type""
+          }
+        }
+      },
+      ""Url"": ""https://graph.microsoft.com/v1.0/"",
+      ""Paging"": {
+        ""OffsetType"": ""url"",
+        ""NextPageKey"": ""@odata.nextLink"",
+        ""pageSize"": 100,
+        ""Parameters"": {
+          ""Limit"": ""$top""
+        }
+      },
+      ""Endpoints"": [
+        {
+          ""Method"": ""GET"",
+          ""Path"": ""/users/"",
+          ""ItemPath"": ""value"",
+          ""ItemType"": ""User"",
+          ""QueryParameters"": {
+            ""$select"": ""id,displayName,givenName,surname,userPrincipalName,city,department,jobTitle,officeLocation,streetAddress,country""
+          },
+          ""Uri"": ""%[coveo_url]/users/%[id]"",
+          ""ClickableUri"": ""%[coveo_url]/users/%[id]"",
+          ""Title"": ""%[displayName]"",
+          ""Metadata"": {
+            ""id"": ""%[id]"",
+            ""username"": ""%[userPrincipalName]"",
+            ""displayName"": ""%[displayName]"",
+            ""givenName"": ""%[givenName]"",
+            ""surname"": ""%[surname]"",
+            ""jobTitle"": ""%[jobTitle]"",
+            ""department"": ""%[department]"",
+            ""country"": ""%[country]"",
+            ""officeLocation"": ""%[officeLocation]"",
+            ""streetAddress"": ""%[streetAddress]""
+          },
+          ""SubQueries"": [
+            {
+              ""Path"": ""/users/%[coveo_parent.id]/photo/$value"",
+              ""Method"": ""GET"",
+              ""IsBinaryBody"": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+",,4.72,43,Coveo Labs,144,2020-03-27,2023-09-02
+Azure DevOps,"A set of development tools for software teams, including CI/CD, repositories, and project tracking.","Software Development, IT & Services, Finance, Manufacturing","platform, service","Employee Performance Index, Operating Cash Flow, Earnings Before Interest and Taxes (EBIT), Sales Conversion Rate",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,This example shows how to index Azure DevOps.,3,"To fully understand how to use this example, you must:
+1. Have a Coveo Platform organization.
+2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
+3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. Make sure you have an Azure DevOps account that has access to everything.
+2. [Create a REST API source](https://docs.coveo.com/en/1896/) and, in the **Authorization** section, enter your credentials.
+3. Use the example in [`SourceJSONConfig.json`](https://github.com/coveooss/connectivity-library/blob/master/Azure%20DevOps/SourceJSONConfig.json) as a base to build your source JSON configuration. This example uses a forced basic authentication. It also contains one endpoint and multiple nested subitems. Adjust it to your own needs.
+4. Make sure you've changed all placeholders in the configuration with your own values.
+5. [Create the appropiate fields and mappings](https://docs.coveo.com/en/1896/#completion).
+6. Check whether your source indexes the desired content properly. You might find you need an additional [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.",[Azure DevOps Services REST API Reference](https://docs.microsoft.com/en-us/rest/api/azure/devops/?view=azure-devops-rest-7.1),,"{
+  ""Services"": [
+    {
+      ""Url"": ""https://dev.azure.com/<USERNAME>/Azure%20DevOps%20Test/_apis/wiki/wikis/Azure-DevOps-Test.wiki/"",
+      ""Authentication"": {
+        ""Username"": ""@Username"",
+        ""Password"": ""@Password"",
+        ""ForceBasicAuthentication"": true
+      },
+      ""Endpoints"": [
+        {
+          ""Path"": ""pages"",
+          ""Method"": ""GET"",
+          ""QueryParameters"": {
+            ""api-version"": ""5.0"",
+            ""path"": ""%2F"",
+            ""recursionLevel"": ""OneLevel""
+          },
+          ""ItemType"": ""page"",
+          ""Uri"": ""%[url]"",
+          ""ClickableUri"": ""%[remoteUrl]"",
+          ""Title"": ""%[path]"",
+          ""ItemPath"": ""subPages"",
+          ""SubItems"": [
+            {
+              ""Path"": ""%[coveo_parent.raw.url]"",
+              ""QueryParameters"": {
+                ""includeContent"": ""True""
+              },
+              ""Method"": ""GET"",
+              ""ItemType"": ""page"",
+              ""Uri"": ""%[url]"",
+              ""ClickableUri"": ""%[remoteUrl]"",
+              ""Title"": ""%[path]"",
+              ""Body"": ""%[content]""
+            },
+            {
+              ""Path"": ""%[coveo_parent.raw.url]"",
+              ""ItemPath"": ""subPages"",
+              ""QueryParameters"": {
+                ""recursionLevel"": ""OneLevel""
+              },
+              ""Method"": ""GET"",
+              ""ItemType"": ""page"",
+              ""Uri"": ""%[url]"",
+              ""ClickableUri"": ""%[remoteUrl]"",
+              ""Title"": ""%[path]"",
+              ""SubItems"": [
+                {
+                  ""Path"": ""%[coveo_parent.raw.url]"",
+                  ""QueryParameters"": {
+                    ""includeContent"": ""True""
+                  },
+                  ""Method"": ""GET"",
+                  ""ItemType"": ""page"",
+                  ""Uri"": ""%[url]"",
+                  ""ClickableUri"": ""%[remoteUrl]"",
+                  ""Title"": ""%[path]"",
+                  ""Body"": ""%[content]""
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}",,4.6,23,Coveo Labs,306,2022-12-03,2023-06-26
+ClickHelp,A browser-based documentation tool for creating user manuals and help files.,"Technology, Education, Healthcare, Manufacturing","website, service","Customer Satisfaction Score (CSAT), Sales Conversion Rate, Website Traffic-to-Lead Ratio, Cost Per Lead",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,"This example shows how to index Projects and Articles created from ClickHelp, a cloud-based documentation tool for teams.",4,"To fully understand how to use this example, you must:
+1. Have a Coveo Platform organization.
+2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
+3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. Generate an [API Key](https://clickhelp.com/software-documentation-tool/user-manual/api-authentication.html) from ClickHelp. To do so, simply navigate your profile and click on ""RESET API KEY"".
+2. [Create a REST API](https://docs.coveo.com/en/1896/) source and, in the **Authorization** section, fill in you username and the API key obtained in step 1. as the password.
+3. Use the example in [`SourceJSONConfig.json`](SourceJSONConfig.json) as a base to build your source JSON configuration. Adjust it to your own needs. ClickHelp maintains a parent/child relationship between Project and Articles objects, this leads to a single endpoint to index projects along with SubItem queries to indexed the related Articles objects.
+4. [Create the appropiate fields and mappings](https://docs.coveo.com/en/1896/#completion).
+5. Check whether your source indexes the desired content properly. You might find you need an additional [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.",[ClickHelp API documentation](https://clickhelp.com/software-documentation-tool/user-manual/clickhelp-api.html),,"{
+    ""Services"": [
+      {
+        ""Url"": ""{Your ClickHelp Domain}/api/v1"",
+        ""Authentication"": {
+          ""Username"": ""@Username"",
+          ""Password"": ""@ApiKey"",
+          ""ForceBasicAuthentication"": ""true""
+        },
+        ""Endpoints"": [
+          {
+            ""Path"": ""/projects"",
+            ""ItemType"": ""Projects"",
+            ""Method"": ""GET"",
+            ""Uri"": ""%[fullUrl]"",
+            ""ClickableUri"": ""%[fullUrl]"",
+            ""ModifiedDate"": ""%[createdOn]"",
+            ""Title"": ""%[title]"",
+            ""Metadata"": {
+              ""parenturl"": ""%[parentUrl]"",
+              ""projecturl"": ""%[url]"",
+              ""visibility"": ""%[visibility]"",
+              ""created_date"": ""%[createdOn]""
+            },
+            ""SubItems"": [
+              {
+                ""Path"": ""/projects/%[coveo_parent.parenturl]/articles"",
+                ""ItemType"": ""Topics"",
+                ""Method"": ""GET"",
+                ""Uri"": ""%[smartLink]"",
+                ""ClickableUri"": ""%[smartLink]"",
+                ""ModifiedDate"": ""%[createdOn]"",
+                ""Title"": ""%[title]"",
+                ""Metadata"": {
+                  ""id"": ""%[url]"",
+                  ""projecturl"": ""%[projectUrl]"",
+                  ""created_date"": ""%[createdOn]"",
+                  ""modified_date"": ""%[modifiedOn]"",
+                  ""visibility"": ""%[coveo_parent.visibility]""
+                },
+                ""SubQueries"": [
+                  {
+                    ""Path"": ""/projects/%[coveo_parent.projecturl]/articles/%[coveo_parent.id]"",
+                    ""Method"": ""GET"",
+                    ""Body"": ""%[html]""
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+",,4.54,50,Coveo Labs,228,2022-05-22,2023-11-16
+Contentful,"A content management platform for web applications, mobile apps and connected devices.","Digital Marketing, Retail, Media, Technology","website, platform","Market Penetration Rate, Customer Churn Rate, Website Traffic-to-Lead Ratio, Average Order Value (AOV)",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,,5,,,,,,,4.42,31,Coveo Labs,342,2020-01-12,2023-11-10
+Contentstack,A headless CMS that enables teams to manage content across digital channels.,"Retail, Technology, Media, Marketing","website, platform","Customer Satisfaction Score (CSAT), Gross Profit Margin, Average Order Value (AOV), Market Penetration Rate",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,This example shows how to index Contentstack. It is based on the sample from Contentstack with Blogs and Authors.,6,"To fully understand how to use this example, you must:
+1. Have a Coveo organization.
+2. Learn about [Coveo connectivity](https://docs.coveo.com/en/1702/).
+3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Log in to Contentstack](https://app.contentstack.com/).
+2. Find the stack you want to index.
+3. Under **Settings** > **Tokens**, [create a management token](https://www.contentstack.com/docs/developers/create-tokens/generate-a-management-token/). Take note of the API key and the management token.
+4. Test the authentication on Postman. Use the **Run in Postman** button on the [Content Management API](https://www.contentstack.com/docs/developers/apis/content-management-api/) page.
+5. [Log in to your Coveo organization](https://platform.cloud.coveo.com).
+6. Under **Sources**, [create a REST API source](https://docs.coveo.com/en/1896/):
+    1. In the **Authorization** section, enter your API key.
+    2. Under **Content to Include**, enter your source JSON configuration. Use the example in [`SourceJSONConfig.json`](https://github.com/coveooss/connectivity-library/blob/master/Contentstack/SourceJSONConfig.json) as a base.
+    3. Make sure you've changed all placeholders in the configuration with your own values:
+        1. Enter your management token in all `headers` sections.
+        2. Replace the URL placeholders with your site's URL.
+    4. Add or update the `Endpoints` section according to your data structure in Contentstack.
+8. [Create the appropiate fields and mappings](https://docs.coveo.com/en/1896/#completion).
+9. Check whether your source indexes the desired content properly. You might find you need an [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.",[Contentstack's Content Management API documentation](https://www.contentstack.com/docs/developers/apis/content-management-api/),,"{
+  ""services"": [
+    {
+      ""url"": ""https://api.contentstack.io/v3/content_types"",
+      ""paging"": {
+        ""pageSize"": 100,
+        ""offsetStart"": 0,
+        ""offsetType"": ""item"",
+        ""parameters"": {
+          ""limit"": ""limit"",
+          ""offset"": ""skip""
+        }
+      },
+      ""endpoints"": [
+        {
+          ""path"": ""/blog_post/entries"",
+          ""method"": ""GET"",
+          ""headers"": {
+            ""api_key"": ""@ApiKey"",
+            ""authorization"": ""<YOUR-MANAGEMENT-TOKEN>""
+          },
+          ""queryParameters"": {
+            ""environment"": ""production""
+          },
+          ""itemPath"": ""entries"",
+          ""itemType"": ""Blog"",
+          ""uri"": ""https://<YOUR-VERCEL-APP>/%[url]"",
+          ""clickableUri"": ""https://<YOUR-VERCEL-APP>/%[url]"",
+          ""title"": ""%[title]"",
+          ""modifiedDate"": ""%[updated_at]"",
+          ""body"": ""<html>\n<head><title>%[title]</title></head>\n<body><h1>%[title]</h1>\n<img src=\""%[featured_image.url]\"">\n<div>%[body.children[*].children[*].text]</div>\n</body>\n</html>"",
+          ""metadata"": {
+            ""uid"": ""%[uid]"",
+            ""authors"": ""%[author..uid]"",
+            ""picture"": ""%[featured_image.url]""
+          },
+          ""SubQueries"": [
+            {
+              ""path"": ""%[coveo_url]/author/entries/%[coveo_parent.authors]"",
+              ""method"": ""GET"",
+              ""headers"": {
+                ""api_key"": ""@ApiKey"",
+                ""authorization"": ""<YOUR-MANAGEMENT-TOKEN>""
+              },
+              ""metadata"": {
+                ""author"": ""%[entry.title]""
+              }
+            }
+          ]
+        },
+        {
+          ""path"": ""/author/entries"",
+          ""method"": ""GET"",
+          ""headers"": {
+            ""api_key"": ""@ApiKey"",
+            ""authorization"": ""<YOUR-MANAGEMENT-TOKEN>""
+          },
+          ""queryParameters"": {
+            ""environment"": ""production""
+          },
+          ""itemPath"": ""entries"",
+          ""itemType"": ""Author"",
+          ""uri"": ""author://%[uid]"",
+          ""clickableUri"": ""%[picture.url]"",
+          ""title"": ""%[title]"",
+          ""modifiedDate"": ""%[updated_at]"",
+          ""body"": ""<html>\n<head><title>%[title]</title></head>\n<body><h1>%[title]</h1>\n<img src=\""%[picture.url]\"">\n<div>%[bio]</div>\n</body>\n</html>"",
+          ""metadata"": {
+            ""uid"": ""%[uid]"",
+            ""author"": ""%[title]"",
+            ""description"": ""%[bio]"",
+            ""picture"": ""%[picture.url]""
+          }
+        }
+      ]
+    }
+  ]
+}
+",,4.65,38,Coveo Labs,354,2022-02-09,2023-09-24
+Cornerstone,"A cloud-based learning, talent management, and talent experience software.","Human Resources, Education, Finance, Healthcare","workplace, platform","Employee Performance Index, Return on Assets (ROA), Customer Satisfaction Score (CSAT), Working Capital Ratio",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,This example shows how to index Cornerstone.,7,"To fully understand how to use this example, you must:
+1. Have a Coveo Platform organization.
+2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
+3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Register an application](https://apiexplorer.csod.com/apiconnectorweb/apiexplorer#/info).
+2. Retrieve your client ID and client secret.
+3. Select the appropriate scopes. See the [complete list of scopes](https://apiexplorer.csod.com/apiconnectorweb/apiexplorer#/scopes-security-permissions). You can also find the required scope on an endpoint information page such as [this one](https://apiexplorer.csod.com/apiconnectorweb/apiexplorer#/apidoc/59aa5211-b2c9-45af-97b1-0c0902dc4060).
+4. Test the authentication on Postman:
+    * https://{{YOURLMS}}-{{env}}.csod.com/services/api/oauth2/token
+    * The grant type is `client_credentials` (add your client ID and client secret).
+5. Create a REST API source and, in the **Authorization** section, provide your client ID and client secret obtained in step 2.
+6. Use the example in [`SourceJSONConfig.json`](https://github.com/coveooss/connectivity-library/blob/master/Cornerstone/SourceJSONConfig.json) as a base to build your source JSON configuration. This example uses OAuth 2.0 authentication and gets all information from one endpoint. Adjust it to your own needs.
+    * By default, the API returns a XML response. So, in the headers section of your JSON configuration, set `""Accept"": ""application/json""`.
+    * In the Query Parameters, you can pass filters such as `""Provider"": ""Technology""`.
+    * You can find the list of available parameters on an endpoint information page such as [this one](https://apiexplorer.csod.com/apiconnectorweb/apiexplorer#/apidoc/59aa5211-b2c9-45af-97b1-0c0902dc4060).
+7. Make sure you've changed all placeholders in the configuration with your own values.
+8. [Create the appropiate fields and mappings](https://docs.coveo.com/en/1896/#completion).
+9. Check whether your source indexes the desired content properly. You might find you need an additional [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.",[Cornerstone API documentation](https://apiexplorer.csod.com/apiconnectorweb/apiexplorer#/info),,"{
+  ""Services"": [
+    {
+      ""Authentication"": {
+        ""OAuth"": {
+          ""Query"": {
+            ""RefreshUrl"": ""https://<<ENTER_YOUR_CUSTOMER>>.csod.com/services/api/oauth2/token"",
+            ""Method"": ""POST"",
+            ""Parameters"": {
+              ""grant_type"": {
+                ""Type"": ""Payload"",
+                ""Value"": ""client_credentials""
+              },
+              ""client_id"": {
+                ""Type"": ""Payload"",
+                ""Value"": ""@ClientId""
+              },
+              ""client_secret"": {
+                ""Type"": ""Payload"",
+                ""Value"": ""@ClientSecret""
+              },
+              ""scope"": {
+                ""Type"": ""Payload"",
+                ""Value"": ""training:read""
+              }
+            }
+          },
+          ""Response"": {
+            ""AccessToken"": ""access_token"",
+            ""SupportsRefreshToken"": ""false"",
+            ""ExpiresIn"": ""expires_in"",
+            ""TokenType"": ""token_type"",
+            ""RefreshToken"": ""refresh_token""
+          }
+        }
+      },
+      ""Url"": ""https://<<ENTER_YOUR_CUSTOMER>>.csod.com"",
+      ""Paging"": {
+        ""PageSize"": 200,
+        ""OffsetStart"": 1,
+        ""OffsetType"": ""page"",
+        ""Parameters"": {
+          ""Limit"": ""limit"",
+          ""Offset"": ""PageNumber""
+        },
+        ""TotalCountKey"": ""totalRecords""
+      },
+      ""Endpoints"": [
+        {
+          ""Path"": ""/services/api/Catalog/GlobalSearch"",
+          ""Method"": ""GET"",
+          ""ItemType"": ""Course"",
+          ""ItemPath"": ""data"",
+          ""Headers"": {
+            ""Accept"": ""application/json""
+          },
+          ""QueryParameters"": {
+            ""Provider"": ""Technology""
+          },
+          ""Uri"": ""%[coveo_url]/%[ObjectId]"",
+          ""ClickableUri"": ""%[coveo_url]/%[ObjectId]"",
+          ""Title"": ""%[Title]"",
+          ""ModifiedDate"": ""%[createdate]"",
+          ""Body"": ""<html><body>%[description]</body></html>"",
+          ""Metadata"": {
+            ""objectid"": ""%[ObjectId]"",
+            ""description"": ""%[Description]"",
+            ""createdate"": ""%[CreateDate]"",
+            ""provider"": ""%[provider]"",
+            ""trainingsubtype"": ""%[TrainingSubType]"",
+            ""duration"": ""%[Duration]"",
+            ""version"": ""%[Version]"",
+            ""modifydate"": ""%[ModifyDate]""
+          }
+        }
+      ]
+    }
+  ]
+}",,4.44,43,Coveo Labs,399,2020-11-03,2023-12-15
+Discourse,An open-source discussion platform for community management.,"Technology, Education, Community Management, Non-Profit","website, platform","Customer Satisfaction Score (CSAT), Market Penetration Rate, Website Traffic-to-Lead Ratio, Lead-to-Customer Conversion Rate",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,This example shows how to retrieve topics posted on a Discourse discussion platform and the posts in each topic.,8,"To fully understand how to use this example, you must:
+1. Have a Coveo Platform organization.
+2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
+3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Get a Discourse API key](https://docs.discourse.org/).
+2. [Create a REST API source](https://docs.coveo.com/en/1896/) and, in the **Authorization** section, provide the API key obtained in step 1.
+3. Use the example in [`SourceJSONConfig.json`](https://github.com/coveooss/connectivity-library/blob/master/Discourse/SourceJSONConfig.json) as a base to build your source JSON configuration. Adjust it to your own needs.
+4. Make sure you've changed all placeholders in the configuration with your own values.
+5. [Create the appropiate fields and mappings](https://docs.coveo.com/en/1896/#completion).
+6. Check whether your source indexes the desired content properly. You might find you need an additional [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.",[Discourse API documentation](https://docs.discourse.org/),,"{
+    ""Services"": [
+        {
+            ""Url"": ""<<ADD_YOUR_DISCUSS_URL>>"",
+            ""Paging"": {
+                ""OffsetStart"": 0,
+                ""PageSize"": 30,
+                ""OffsetType"": ""page"",
+                ""Parameters"": {
+                    ""Offset"": ""page"",
+                    ""limit"": ""per_page""
+                }
+            },
+            ""Endpoints"": [
+                {
+                    ""Headers"": {
+                        ""api-key"": ""@ApiKey"",
+                        ""api-username"": ""<<ENTER_YOUR_CRAWLING_USERNAME>>""
+                    },
+                    ""Paging"": {
+                        ""OffsetStart"": 0,
+                        ""PageSize"": 30,
+                        ""OffsetType"": ""page"",
+                        ""Parameters"": {
+                            ""Offset"": ""page"",
+                            ""limit"": ""per_page""
+                        }
+                    },
+                    ""Path"": ""/categories.json"",
+                    ""ItemPath"": ""category_list.categories"",
+                    ""Method"": ""GET"",
+                    ""ItemType"": ""Category"",
+                    ""Uri"": ""%[coveo_url]/categories/%[id]"",
+                    ""ClickableUri"": ""%[coveo_url]/c/%[slug]"",
+                    ""Title"": ""%[name]"",
+                    ""Body"": ""%[description_text]"",
+                    ""Metadata"": {
+                        ""id"": ""%[id]"",
+                        ""filetype"": ""Category"",
+                        ""name"": ""%[name]"",
+                        ""color"": ""%[color]"",
+                        ""topic_count"": ""%[topic_count]"",
+                        ""post_count"": ""%[post_count]"",
+                        ""description"": ""%[description_text]""
+                    },
+                    ""SubItems"": [
+                        {
+                            ""Headers"": {
+                                ""api-key"": ""@ApiKey"",
+                                ""api-username"": ""<<ENTER_YOUR_CRAWLING_USERNAME>>""
+                            },
+                            ""Paging"": {
+                                ""OffsetStart"": 0,
+                                ""PageSize"": 30,
+                                ""OffsetType"": ""page"",
+                                ""Parameters"": {
+                                    ""Offset"": ""page"",
+                                    ""limit"": ""per_page""
+                                }
+                            },
+                            ""Path"": ""/c/%[coveo_parent.id].json"",
+                            ""ItemPath"": ""topic_list.topics"",
+                            ""Method"": ""GET"",
+                            ""ItemType"": ""Topic"",
+                            ""Uri"": ""%[coveo_url]/topics/%[id]"",
+                            ""ClickableUri"": ""%[coveo_url]/t/%[slug]/%[id]"",
+                            ""Title"": ""%[title]"",
+                            ""Body"": ""%[excerpt]"",
+                            ""ModifiedDate"": ""%[last_posted_at]"",
+                            ""SubQueries"": [
+                                {
+                                    ""Headers"": {
+                                        ""api-key"": ""@ApiKey"",
+                                        ""api-username"": ""<username>""
+                                    },
+                                    ""Path"": ""/t/%[topic_id].json"",
+                                    ""Method"": ""GET"",
+                                    ""Metadata"": {
+                                        ""coveo_poster_names"": ""%[post_stream.posts[*].name]""
+                                    }
+                                }
+                            ],
+                            ""Metadata"": {
+                                ""filetype"": ""Topic"",
+                                ""archetype"": ""%[archetype]"",
+                                ""archived"": ""%[archived]"",
+                                ""bumped"": ""%[bumped]"",
+                                ""bumped_at"": ""%[bumped_at]"",
+                                ""category_id"": ""%[category_id]"",
+                                ""closed"": ""%[closed]"",
+                                ""created_at"": ""%[created_at]"",
+                                ""fancy_title"": ""%[fancy_title]"",
+                                ""highest_post_number"": ""%[highest_post_number]"",
+                                ""topic_id"": ""%[id]"",
+                                ""image_url"": ""%[image_url]"",
+                                ""last_posted_at"": ""%[last_posted_at]"",
+                                ""like_count"": ""%[like_count]"",
+                                ""pinned"": ""%[pinned]"",
+                                ""posters"": ""%[posters]"",
+                                ""posts_count"": ""%[posts_count]"",
+                                ""reply_count"": ""%[reply_count]"",
+                                ""slug"": ""%[slug]"",
+                                ""title"": ""%[title]"",
+                                ""unseen"": ""%[unseen]"",
+                                ""views"": ""%[views]"",
+                                ""visible"": ""%[visible]"",
+                                ""coveo_category_name"": ""%[coveo_parent.name]"",
+                                ""coveo_category_description"": ""%[coveo_parent.description]""
+                            },
+                            ""SubItems"": [
+                                {
+                                    ""Headers"": {
+                                        ""api-key"": ""@ApiKey"",
+                                        ""api-username"": ""<<ENTER_YOUR_CRAWLING_USERNAME>>""
+                                    },
+                                    ""Paging"": {
+                                        ""OffsetStart"": 0,
+                                        ""PageSize"": 30,
+                                        ""OffsetType"": ""page"",
+                                        ""Parameters"": {
+                                            ""Offset"": ""page"",
+                                            ""limit"": ""per_page""
+                                        }
+                                    },
+                                    ""Path"": ""/t/%[coveo_parent.topic_id].json"",
+                                    ""ItemPath"": ""post_stream.posts"",
+                                    ""Method"": ""GET"",
+                                    ""ItemType"": ""Post"",
+                                    ""Uri"": ""%[coveo_url]/posts/%[id]"",
+                                    ""ClickableUri"": ""%[coveo_url]/t/%[coveo_parent.slug]/%[coveo_parent.topic_id]/%[post_number]"",
+                                    ""Title"": ""%[name]"",
+                                    ""Body"": ""%[cooked]"",
+                                    ""Metadata"": {
+                                        ""filetype"": ""Post"",
+                                        ""ActionsSummary"": ""%[actions_summary]"",
+                                        ""AvatarTemplate"": ""%[avatar_template]"",
+                                        ""AvgTime"": ""%[avg_time]"",
+                                        ""CanDelete"": ""%[can_delete]"",
+                                        ""CanEdit"": ""%[can_edit]"",
+                                        ""CanRecover"": ""%[avg_time]"",
+                                        ""Cooked"": ""%[cooked]"",
+                                        ""CreatedAt"": ""%[created_at]"",
+                                        ""DeletedAt"": ""%[deleted_at]"",
+                                        ""DisplayUsername"": ""%[display_username]"",
+                                        ""Hidden"": ""%[hidden]"",
+                                        ""HiddenReasonId"": ""%[hidden_reason_id]"",
+                                        ""Id"": ""%[id]"",
+                                        ""IncomingLinkCount"": ""%[incoming_link_count]"",
+                                        ""Moderator"": ""%[moderator]"",
+                                        ""Name"": ""%[name]"",
+                                        ""PostNumber"": ""%[post_number]"",
+                                        ""PostType"": ""%[post_type]"",
+                                        ""QuoteCount"": ""%[quote_count]"",
+                                        ""Read"": ""%[read]"",
+                                        ""Reads"": ""%[reads]"",
+                                        ""ReplyCount"": ""%[reply_count]"",
+                                        ""ReplyToPostNumber"": ""%[reply_to_post_number]"",
+                                        ""Score"": ""%[score]"",
+                                        ""Staff"": ""%[staff]"",
+                                        ""TopicId"": ""%[topic_id]"",
+                                        ""TopicSlug"": ""%[topic_slug]"",
+                                        ""TrustLevel"": ""%[trust_level]"",
+                                        ""UpdatedAt"": ""%[updated_at]"",
+                                        ""UserDeleted"": ""%[user_deleted]"",
+                                        ""UserId"": ""%[user_id]"",
+                                        ""Username"": ""%[username]"",
+                                        ""Yours"": ""%[yours]"",
+                                        ""Version"": ""%[version]"",
+                                        ""coveo_category_name"": ""%[coveo_parent.coveo_category_name]"",
+                                        ""coveo_topic_title"": ""%[coveo_parent.title]""
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}",,4.89,48,Coveo Labs,148,2023-01-09,2023-09-26
+Docebo LMS,A learning management system for online training and learning.,"Corporate Training, Education, IT & Services, Healthcare","workplace, platform","Employee Performance Index, Customer Satisfaction Score (CSAT), Return on Equity (ROE), Sales Conversion Rate",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,"This example shows how to index courses, learning content (courses content) and learning plans from Docebo LMS.",9,,"1. Ask Docebo administrator to create an API app for Coveo (OAuth 2.0 protocol). You'll need a client ID and a client secret. For more information, see [Activating and Managing the SSO and API App](https://www.docebo.com/knowledge-base/how-to-activate-and-manage-the-sso-and-api-app/) and [APIs Authentication](https://www.docebo.com/knowledge-base/authentication-api-ssp-app-grant-types/). **Important:** With the new 7.0 APIs (found at `<<YOUR_LMS>>.docebosaas.com/api-browser/`), the system also requires a specific user permission.
+2. Try generating an access token with Postman or any other REST client. Example with ""password"" grant type (`<<YOUR_LMS>>.docebosaas.com/oauth2/token`).
+3. Test your access token with the course endpoint `<<YOUR_LMS>>.docebosaas.com/api/learn/v1/courses`.
+4. [Create a REST API source](https://docs.coveo.com/en/1896/) and, in the **Authorization** section, provide your client ID, client secret, and credentials.
+5. Use the example in [`SourceJSONConfig.json`](https://github.com/coveooss/connectivity-library/blob/master/Docebo%20LMS/SourceJSONConfig.json) as a base to build your source JSON configuration. This example uses two endpoints to retrieve courses and learning plans. The course endpoint uses a subquery to get course content. Adjust the configuration example to your own needs.
+6. Make sure you've changed all placeholders in the configuration with your own values.
+7. [Create the appropiate fields and mappings](https://docs.coveo.com/en/1896/#completion).
+8. Check whether your source indexes the desired content properly. You might find you need an additional [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.",[Docebo LMS API documentation](https://help.docebo.com/hc/en-us),,"{
+  ""Services"": [
+    {
+      ""Authentication"": {
+        ""OAuth"": {
+          ""Query"": {
+            ""RefreshUrl"": ""htts://<<ENTER_YOUR_LMS>>.docebosaas.com/oauth2/token"",
+            ""Method"": ""POST"",
+            ""Parameters"": {
+              ""grant_type"": {
+                ""Type"": ""Payload"",
+                ""Value"": ""password""
+              },
+              ""client_id"": {
+                ""Type"": ""Payload"",
+                ""Value"": ""@ClientId""
+              },
+              ""client_secret"": {
+                ""Type"": ""Payload"",
+                ""Value"": ""@ClientSecret""
+              },
+              ""username"": {
+                ""Type"": ""Payload"",
+                ""Value"": ""@Username""
+              },
+              ""password"": {
+                ""Type"": ""Payload"",
+                ""Value"": ""@Password""
+              }
+            }
+          },
+          ""Response"": {
+            ""AccessToken"": ""access_token"",
+            ""SupportsRefreshToken"": ""false"",
+            ""ExpiresIn"": ""expires_in"",
+            ""TokenType"": ""token_type"",
+            ""RefreshToken"": ""refresh_token""
+          }
+        }
+      },
+      ""Url"": ""https://<_ENTER_YOUR_LMS>>.docebosaas.com/api/learn/v1"",
+      ""Endpoints"": [
+        {
+          ""Path"": ""/courses"",
+          ""Method"": ""GET"",
+          ""Paging"": {
+            ""PageSize"": 20,
+            ""OffsetType"": ""url"",
+            ""Parameters"": {
+              ""Limit"": ""page_size""
+            },
+            ""NextPageKey"": ""_links.next.href""
+          },
+          ""ItemType"": ""Course"",
+          ""ItemPath"": ""data.items"",
+          ""Uri"": ""https://<_ENTER_YOUR_LMS>>.docebosaas.com/learn/course/internal/view/elearning/%[id_course]/%[slug_name]"",
+          ""ClickableUri"": ""https://<_ENTER_YOUR_LMS>>.docebosaas.com/learn/course/internal/view/elearning/%[id_course]/%[slug_name]"",
+          ""Title"": ""%[name]"",
+          ""ModifiedDate"": ""%[date_last_updated]"",
+          ""Body"": ""<html><body>%[description]</body></html>"",
+          ""Metadata"": {
+            ""id"": ""%[id_course]"",
+            ""language"": ""%[language]"",
+            ""coursetype"": ""%[course_type]"",
+            ""code"": ""%[code]"",
+            ""imgurl"": ""%[img_url]"",
+            ""slug_name"": ""%[slug_name]"",
+            ""selling"": ""%[selling]"",
+            ""languagelabel"": ""%[language_label]"",
+            ""startdate"": ""%[start_date]"",
+            ""enddate"": ""%[end_date]"",
+            ""idcourse"": ""%[id_course]"",
+            ""price"": ""%[price]"",
+            ""currentrating"": ""%[current_rating]"",
+            ""credits"": ""%[credits]"",
+            ""available_seats"": ""%[available_seats]""
+          },
+          ""SubItems"": [
+            {
+              ""Path"": ""/courses/%[coveo_parent.id]"",
+              ""Method"": ""GET"",
+              ""ItemType"": ""Part"",
+              ""ItemPath"": ""data.tree"",
+              ""Uri"": ""https://<_ENTER_YOUR_LMS>>.docebosaas.com/learn/course/%[coveo_parent.id]/play/%[id]"",
+              ""ClickableUri"": ""https://<_ENTER_YOUR_LMS>>.docebosaas.com/learn/course/%[coveo_parent.id]/play/%[id]"",
+              ""Title"": ""%[name]"",
+              ""Body"": ""<html><body>%[short_description] %[description]</body></html>"",
+              ""Metadata"": {
+                ""slug_name"": ""%[slug_name]""
+              }
+            }
+          ]
+        },
+        {
+          ""Path"": ""/lp"",
+          ""Method"": ""GET"",
+          ""Paging"": {
+            ""PageSize"": 20,
+            ""OffsetType"": ""url"",
+            ""Parameters"": {
+              ""Limit"": ""page_size""
+            },
+            ""NextPageKey"": ""_links.next.href""
+          },
+          ""ItemType"": ""LearningPlan"",
+          ""ItemPath"": ""data.items"",
+          ""Uri"": ""https://<_ENTER_YOUR_LMS>>.docebosaas.com/learn/learning_plan/view/%[id]/%[name]"",
+          ""ClickableUri"": ""https://<_ENTER_YOUR_LMS>>.docebosaas.com/learn/learning_plan/view/%[id]/%[name]"",
+          ""Title"": ""%[name]"",
+          ""ModifiedDate"": ""%[date_last_updated]"",
+          ""Body"": ""<html><body>%[description]</body></html>"",
+          ""Metadata"": {
+            ""code"": ""%[code]""
+          }
+        }
+      ]
+    }
+  ]
+}",,4.96,22,Coveo Labs,92,2020-02-02,2023-08-22
+DynamoDB,Amazon's fully managed NoSQL database service.,"Technology, Retail, Gaming, Finance","platform, service","Operating Cash Flow, Gross Profit Margin, Inventory Turnover Rate, Return on Assets (ROA)",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,This example shows how to index DynamoDB.,10,"In order to fully understand and use this example, you must:
+1. Have a Coveo Platform organization.
+2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
+3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Create an Amazon API gateway](https://aws.amazon.com/blogs/compute/using-amazon-api-gateway-as-a-proxy-for-dynamodb/)to provide a REST service to your DynamoDB.
+2. [Create and configure a REST API source](https://docs.coveo.com/en/1896/) using the example in [`SourceJSONConfig.json`](https://github.com/coveooss/connectivity-library/blob/master/DynamoDB/SourceJSONConfig.json). Adjust the configuration example to your own needs.
+3. Make sure you've changed all placeholders in the configuration with your own values.
+4. [Create the appropiate fields and mappings](https://docs.coveo.com/en/1896/#completion).
+5. Check whether your source indexes the desired content properly. You might find you need an additional [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.",[DynamoDB API documentation](https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/Welcome.html),,"{
+   ""Services"": [
+      {
+         ""Url"": ""https://YOUR_AMAZON_REST_API_URL"",
+         ""Endpoints"": [
+            {
+               ""Headers"": {
+                  ""contenttype"": ""application/json""
+               },
+               ""QueryParameters"": {
+                  ""table"": ""GEOCODE""
+               },
+               ""Path"": ""PATH_TO_YOUR_REST_SERVICE"",
+               ""Method"": ""GET"",
+               ""ItemPath"": ""Items"",
+               ""ItemType"": ""Database"",
+               ""Uri"": ""https://mydb/%[city]"",
+               ""ClickableUri"": ""https://mydb/%[city]"",
+               ""Title"": ""%[city]"",
+               ""ModifiedDate"": """",
+               ""Body"": ""%[city]"",
+               ""Metadata"": {
+                  ""filetype"": ""Database"",
+                  ""city"": ""%[City]""
+               }
+            }
+         ]
+      }
+   ]
+}",,4.38,20,Coveo Labs,251,2023-04-21,2023-09-07
+Exchange Online,"Microsoft's hosted email service, part of the Office 365 suite.","Corporate, Government, Education, Healthcare","workplace, service","Employee Performance Index, Net Profit Margin, Working Capital Ratio, Customer Churn Rate",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,This example shows how to a index Exchange Online shared mailbox or a user's mailbox using the Microsoph Graph API.,11,"To fully understand how to use this example, you must:
+1. Have a Coveo Platform organization.
+2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
+3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Create an OAuth app and a client secret](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app). Note your client ID and the newly created client secret.
+2. Under **API Permissions**, grant `Mail.Read`, located under **Microsoft Graph API**. Then, click **Grant admin consent for X**.
+3. [Get your tenant ID](https://o365hq.com/faq/how-to-find-your-office-365-tenant-id), as you'll need it to place in the request endpoint.
+4. Create a REST API source and, in the **Authorization** section, provide your client ID and client secret obtained in step 1.
+5. Use the example in [`ExchangeOnlineSourceConfig.json`](https://github.com/coveooss/connectivity-library/blob/master/Exchange%20Online/ExchangeOnlineSourceConfig.json) as a base to build your source JSON configuration. This example uses OAuth 2.0 authentication. It also contains one Endpoint, which gets all emails of a given mailbox, and one Subquery, which gets email attachments. Adjust it to your own needs.
+7. Make sure you've changed all placeholders in the configuration with your own values.
+8. [Create the appropiate fields and mappings](https://docs.coveo.com/en/1896/#completion).
+9. Check whether your source indexes the desired content properly. You might find you need an additional [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.",[API documentation](https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/office-365-rest-apis-for-mail-calendars-and-contacts),,,,4.79,20,Coveo Labs,50,2023-02-26,2023-05-23
+Github,A platform for version control and collaboration for software development.,"Software Development, Technology, Education, Startups","platform, service","Employee Performance Index, Gross Profit Margin, Return on Equity (ROE), Market Penetration Rate",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,"
+This example shows how to index GitHub repositories and other content types.",12,"
+To fully understand how to use this example, you must:
+
+1. Have a Coveo Platform organization.
+2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
+3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","
+1. Follow the [Web Application Flow](https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#web-application-flow) steps to get an OAuth 2.0 token.
+2. [Create a REST API source](https://docs.coveo.com/en/1896/) and, in the **Authorization** section, provide your token.
+3. Use the example in [`SourceJSONConfig.json`](./SourceJSONConfig.json) as a base to build your source JSON configuration. Adjust it to your own needs.
+4. Make sure you've changed all placeholders in the configuration with your own values.
+5. [Create the appropiate fields and mappings](https://docs.coveo.com/en/1896/#completion).
+6. Check whether your source indexes the desired content properly. You might find you need an additional [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.","
+* [GitHub REST API documentation](https://docs.github.com/en/rest)
+* [GitHub REST](https://docs.github.com/en/rest)
+* [GitHub GraphQL](https://docs.github.com/en/graphql)",,"{
+  ""Services"": [
+    {
+      ""Url"": ""https://api.github.com/"",
+      ""Paging"": {
+        ""OffsetStart"": 1,
+        ""PageSize"": 100,
+        ""OffsetType"": ""page"",
+        ""Parameters"": {
+          ""Offset"": ""page"",
+          ""limit"": ""per_page""
+        }
+      },
+      ""Endpoints"": [
+        {
+          ""Headers"": {
+            ""Authorization"": ""Bearer @ApiKey"",
+            ""User-Agent"": ""MyIndexer""
+          },
+          ""Path"": ""orgs/ID_OF_YOUR_GITHUB_ORG/repos"",
+          ""Method"": ""GET"",
+          ""ItemType"": ""GitHubRepo"",
+          ""Uri"": ""%[html_url]"",
+          ""ClickableUri"": ""%[html_url]"",
+          ""Title"": ""%[name]"",
+          ""Metadata"": {
+            ""owner"": ""%[owner.login]"",
+            ""reponame"": ""%[name]"",
+            ""defaultbranch"": ""%[default_branch]""
+          },
+          ""SubItems"": [
+            {
+              ""Headers"": {
+                ""Authorization"": ""Bearer @ApiKey"",
+                ""User-Agent"": ""MyIndexer""
+              },
+              ""Path"": ""repos/%[coveo_parent.owner]/%[coveo_parent.reponame]/branches/%[coveo_parent.defaultbranch]"",
+              ""Method"": ""GET"",
+              ""SkippableErrorCodes"": ""404"",
+              ""ItemType"": ""GitHubBranch"",
+              ""Uri"": ""%[commit.html_url]"",
+              ""ClickableUri"": ""%[commit.html_url]"",
+              ""Title"": ""%[name] (%[coveo_parent.reponame])"",
+              ""ModifiedDate"": """",
+              ""SubItems"": [
+                {
+                  ""Headers"": {
+                    ""Authorization"": ""Bearer @ApiKey"",
+                    ""User-Agent"": ""MyIndexer""
+                  },
+                  ""Path"": ""repos/%[coveo_parent.coveo_parent.owner]/%[coveo_parent.coveo_parent.reponame]/git/trees/%[coveo_parent.raw.commit.sha]"",
+                  ""QueryParameters"": {
+                    ""recursive"": ""1""
+                  },
+                  ""Method"": ""GET"",
+                  ""ItemPath"": ""tree"",
+                  ""ItemType"": ""GitHubItem"",
+                  ""Uri"": ""https://github.com/%[coveo_parent.coveo_parent.owner]/%[coveo_parent.coveo_parent.reponame]/blob/%[coveo_parent.coveo_parent.defaultbranch]/%[path]"",
+                  ""ClickableUri"": ""https://github.com/%[coveo_parent.coveo_parent.owner]/%[coveo_parent.coveo_parent.reponame]/blob/%[coveo_parent.coveo_parent.defaultbranch]/%[path]"",
+                  ""Title"": ""%[path] (%[coveo_parent.coveo_parent.reponame])"",
+                  ""ModifiedDate"": ""%[coveo_parent.raw.commit.commit.committer.date]"",
+                  ""Body"": ""%[content]"",
+                  ""SubQueries"": [
+                    {
+                      ""Headers"": {
+                        ""Authorization"": ""Bearer @ApiKey"",
+                        ""User-Agent"": ""MyIndexer""
+                      },
+                      ""Path"": ""https://raw.githubusercontent.com/myusername/%[coveo_parent.coveo_parent.coveo_parent.raw.name]/%[coveo_parent.coveo_parent.coveo_parent.raw.default_branch]/%[coveo_parent.raw.path]"",
+                      ""Method"": ""GET"",
+                      ""IsBinaryBody"": true
+                    }
+                  ],
+                  ""Metadata"": {
+                    ""path"": ""%[path]"",
+                    ""documenttype"": ""GitHubItem"",
+                    ""filetype"": ""txt"",
+                    ""author"": ""%[coveo_parent.raw.commit.commit.author.name]""
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+",,4.53,24,Coveo Labs,93,2022-03-17,2023-04-16
+Google Sheets,A web-based spreadsheet program part of the Google Drive office suite.,"All industries, especially Corporate, Education, Small Business, Non-Profit","workplace, service","Operating Cash Flow, Working Capital Ratio, Employee Performance Index, Sales Conversion Rate",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,This examples shows you how to index the information on a Google Sheet.,13,"To fully understand how to use this example, you must:
+1. Have a Coveo Platform organization.
+2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
+3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Create a new Google Cloud Platform project](https://console.developers.google.com/).
+2. [Enable the Google Sheets API on your project](https://support.google.com/googleapi/answer/6158841?hl=en).
+3. [Create authorization credentials](https://developers.google.com/sheets/api/guides/authorizing).
+4. Obtain OAuth 2.0 access tokens:
+    1. Open the following link in private browsing mode: https://accounts.google.com/o/oauth2/v2/auth?response_type=code&scope=https://www.googleapis.com/auth/spreadsheets.readonly&client_id=<YOUR_CLIENT_ID>&redirect_uri=https://localhost:8080&access_type=offline.
+    2. Log in with the user account with which you created the project in step 1.
+    3. Approve access to Google Sheets.
+    4. In the URL of the returned page (which says it can’t be reached), copy the value for the code query parameter, e.g., `4/xyz`. This code can only be used once.
+    5. [Exchange your authorization code for a refresh token](https://developers.google.com/identity/protocols/oauth2/web-server#httprest_3). Use Postman or a similar solution to call the required endpoint.
+5. [Create a REST API source](https://docs.coveo.com/en/1896/) and, in the **Authorization** section, provide your client ID, client secret, and refresh token.
+6. Use the example in [`SourceJSONConfig.json`](https://github.com/coveooss/connectivity-library/blob/master/Google%20Sheets/SourceJSONConfig.json) as a base to build your source JSON configuration. Adjust the configuration example to your own needs.
+7. Make sure you've changed all placeholders in the configuration with your own values.
+8. [Create the appropiate fields and mappings](https://docs.coveo.com/en/1896/#completion).
+9. Check whether your source indexes the desired content properly. You might find you need an additional [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.",[Google Sheets API documentation](https://developers.google.com/sheets/api),,"{
+  ""Services"": [
+    {
+      ""Authentication"": {
+        ""OAuth"": {
+          ""Headers"": {
+            ""Content-Type"": ""application/json""
+          },
+          ""Query"": {
+            ""RefreshUrl"": ""https://www.googleapis.com/oauth2/v4/token"",
+            ""Method"": ""POST"",
+            ""Parameters"": {
+              ""grant_type"": {
+                ""Type"": ""Payload"",
+                ""Value"": ""refresh_token""
+              },
+              ""refresh_token"": {
+                ""Type"": ""Payload"",
+                ""Value"": ""@RefreshToken"",
+                ""IsRefreshToken"": true
+              },
+              ""client_id"": {
+                ""Type"": ""Payload"",
+                ""Value"": ""@ClientID""
+              },
+              ""client_secret"": {
+                ""Type"": ""Payload"",
+                ""Value"": ""@ClientSecret""
+              },
+              ""redirect_uri"": {
+                ""Type"": ""Payload"",
+                ""Value"": ""http://localhost""
+              }
+            }
+          },
+          ""Response"": {
+            ""AccessToken"": ""access_token"",
+            ""SupportsRefreshToken"": ""false"",
+            ""ExpiresIn"": ""expires_in"",
+            ""TokenType"": ""token_type""
+          }
+        }
+      },
+      ""Url"": ""https://sheets.googleapis.com/v4/spreadsheets/<id>"",
+      ""Endpoints"": [
+        {
+          ""Path"": ""/values/<<ENTER_TARGET_SHEETNAME>>!<<ENTER_TARGET_RANGE>>"",
+          ""Method"": ""GET"",
+          ""QueryParameters"": {
+            ""majorDimension"": ""ROWS""
+          },
+          ""ItemType"": ""<type>"",
+          ""ItemPath"": ""values"",
+          ""Uri"": ""%[$[<<ENTER_DATAPOINT_COLUMN_NUMBER>>]]"",
+          ""ClickableUri"": ""%[$[<<ENTER_DATAPOINT_COLUMN_NUMBER>>]]"",
+          ""Title"": ""%[$[<<ENTER_DATAPOINT_COLUMN_NUMBER>>]]"",
+          ""Metadata"": {
+            ""metadata1"": ""%[$[<<ENTER_DATAPOINT_COLUMN_NUMBER>>]]"",
+            ""metadata2"": ""%[$[<<ENTER_DATAPOINT_COLUMN_NUMBER>>]]"",
+            ""metadata3"": ""%[$[<<ENTER_DATAPOINT_COLUMN_NUMBER>>]]"",
+            ""metadata4"": ""%[$[<<ENTER_DATAPOINT_COLUMN_NUMBER>>]]""
+          }
+        }
+      ]
+    }
+  ]
+}",,4.57,41,Coveo Labs,73,2020-10-02,2023-11-24
+GraphQL,"A query language for APIs, offering a more efficient, powerful and flexible alternative to REST.","Technology, Media, Retail, Finance","platform, service","Customer Satisfaction Score (CSAT), Market Penetration Rate, Return on Assets (ROA), Gross Profit Margin",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,"
+This example shows how to index a GraphQL API, using the free Star Wars API.",14,"
+To fully understand how to use this example, you must:
+
+1. Have a Coveo Platform organization.
+2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
+3. Learn [how to configure a GraphQL API source](https://docs.coveo.com/en/n6gh2329/).","
+1. [Create a GraphQL API source](https://docs.coveo.com/en/n6gh2329/).
+2. Copy the config in [`SourceJSONConfig.json`](./SourceJSONConfig.json) to your source JSON configuration. Adjust it to your own needs.
+3. [Create the appropiate fields and mappings](https://docs.coveo.com/en/n6gh2329#completion).
+4. Check whether your source indexes the desired content properly. You might find you need an additional [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.","
+[Star Wars API Explorer](https://studio.apollographql.com/public/star-wars-swapi/variant/current/explorer)",,"{
+  ""Services"": [
+    {
+      ""Url"": ""https://swapi-graphql.netlify.app/.netlify/functions"",
+      ""Endpoints"": [
+        {
+          ""paging"": {
+            ""pageSize"": 3,
+            ""offsetType"": ""cursor"",
+            ""nextPageKey"": ""data.allFilms.pageInfo.endCursor"",
+            ""parameters"": {
+              ""FetchNextPageUntilNoResult"": ""true""
+            }
+          },
+          ""Path"": ""index"",
+          ""Method"": ""POST"",
+          ""ItemPath"": ""data.allFilms.edges"",
+          ""SkippableErrorCodes"": ""404"",
+          ""ItemType"": ""Films"",
+          ""Uri"": ""http://www.coveo.com/%[node.id]"",
+          ""ClickableUri"": ""http://www.coveo.com/%[node.id]"",
+          ""Title"": ""%[node.title]"",
+          ""ModifiedDate"": ""%[node.releaseDate]"",
+          ""PayloadJsonContent"": ""{\""query\"":\""query Query {\\r\\n  allFilms (after:@offset, first:@pageSize) {\\r\\n        edges {\\r\\n            node {\\r\\n                id\\r\\n                title\\r\\n                director\\r\\n                releaseDate\\r\\n            }\\r\\n        }\\r\\n        pageInfo {\\r\\n            endCursor\\r\\n        }\\r\\n    }\\r\\n}\""}""
+        }
+      ]
+    }
+  ]
+}",,4.93,25,Coveo Labs,237,2023-04-13,2023-10-14
+LearnUpon,"An LMS that helps organizations train their employees, partners, and customers.","Corporate Training, Education, Healthcare, Technology","workplace, platform","Employee Performance Index, Customer Satisfaction Score (CSAT), Sales Conversion Rate, Return on Equity (ROE)",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,This example shows how to retrieve courses from the LearnUpon platform. It is also possible to retrieve modules but this is not covered in this version.,15,"To fully understand how to use this example, you must:
+1. Have a Coveo Platform organization.
+2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
+3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Get a LearnUpon account](https://docs.learnupon.com/api/#get-started).
+2. [Create a REST API source](https://docs.coveo.com/en/1896/) and, in the **Authorization** section, provide the credentials obtained in step 1.
+3. Use the example in [`SourceJSONConfig.json`](https://github.com/coveooss/connectivity-library/blob/master/LearnUpon/SourceJSONConfig.json) as a base to build your source JSON configuration. Adjust it to your own needs.
+4. Make sure you've changed all placeholders in the configuration with your own values.
+5. [Create the appropiate fields and mappings](https://docs.coveo.com/en/1896/#completion).
+6. Check whether your source indexes the desired content properly. You might find you need an additional [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.",[LearnUpon API documentation](https://docs.learnupon.com/api/#learnupon-technical-documentation),,"{
+    ""services"": [
+      {
+        ""url"": ""https://[yourdomain].learnupon.com/api/v1"",
+        ""Paging"": {
+          ""pageSize"": 100,
+          ""offsetStart"": 0,
+          ""offsetType"": ""page"",
+          ""parameters"": {
+            ""limit"": ""limit"",
+            ""offset"": ""offset""
+          }
+        },
+        ""Authentication"": {
+          ""username"": ""@Username"",
+          ""password"": ""@Password"",
+          ""forceBasicAuthentication"": ""true""
+        },
+        ""Endpoints"": [
+          {
+            ""path"": ""/courses"",
+            ""method"": ""GET"",
+            ""itemType"": ""Course"",
+            ""itemPath"": ""courses"",
+            ""Uri"": ""https://[CUSTOM_DOMAIN]/store/%[id]"",
+            ""ClickableUri"": ""https://[CUSTOM_DOMAIN]/store/%[id]"",
+            ""Title"": ""%[name]"",
+            ""body"": ""%[description_text]"",
+            ""modifiedDate"": ""%[created_at]"",
+            ""Metadata"": {
+              ""filetype"": ""Course"",
+              ""courseid"": ""%[id]"",
+              ""length"": ""%[minute_length]"",
+              ""course_length_unit"": ""%[course_length_unit]"",
+              ""source_id"": ""%[source_id]"",
+              ""sellable"": ""%[sellable]"",
+              ""difficulty_level"": ""%[difficulty_level]"",
+              ""price_unit"": ""%[price]"",
+              ""keywords"": ""%[keywords]"",
+              ""thumbnail_image_url"": ""%[thumbnail_image_url]"",
+              ""allow_users_rate_course"": ""%[allow_users_rate_course]""
+            }
+          }
+        ]
+      }
+    ]
+  }",,4.07,26,Coveo Labs,180,2023-10-27,2023-11-12
+LinkedIn Learning,An online learning platform offering video courses taught by industry experts.,"Professional Development, Education, Corporate, Technology","workplace, platform","Employee Performance Index, Customer Satisfaction Score (CSAT), Market Penetration Rate, Gross Profit Margin",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,This example shows how to index LinkedIn Learning.,16,"In order to fully understand how to use this example, you must:
+1. Have a Coveo Platform organization.
+2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
+3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. Ensure you have access to LinkedIn Learning APIs. They are available for organizations that have purchased LinkedIn Learning site licenses.
+2. Get your client ID and client secret.
+3. [Create a REST API source](https://docs.coveo.com/en/1896/) and, in the **Authorization** section, enter your client ID and client secret.
+4. Use the example in [`SourceJSONConfig.json`](https://github.com/coveooss/connectivity-library/blob/master/LinkedIn%20Learning/SourceJSONConfig.json) as a base to build your source JSON configuration. Adjust the configuration example to your own needs.
+5. Make sure you've changed all placeholders in the configuration with your own values.
+6. [Create the appropiate fields and mappings](https://docs.coveo.com/en/1896/#completion).
+7. Check whether your source indexes the desired content properly. You might find you need an additional [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.",[LinkedIn Learning API documentation](https://docs.microsoft.com/en-us/linkedin/learning/overview/),,"{
+  ""Services"": [
+    {
+      ""Authentication"": {
+        ""OAuth"": {
+          ""Query"": {
+            ""RefreshUrl"": ""https://www.linkedin.com/oauth/v2/accessToken"",
+            ""Method"": ""POST"",
+            ""Parameters"": {
+              ""grant_type"": {
+                ""Type"": ""Payload"",
+                ""Value"": ""client_credentials""
+              },
+              ""client_id"": {
+                ""Type"": ""Payload"",
+                ""Value"": ""@ClientId""
+              },
+              ""client_secret"": {
+                ""Type"": ""Payload"",
+                ""Value"": ""@ClientSecret""
+              }
+            }
+          },
+          ""Response"": {
+            ""AccessToken"": ""access_token"",
+            ""SupportsRefreshToken"": ""false"",
+            ""ExpiresIn"": ""expires_in"",
+            ""TokenType"": ""token_type"",
+            ""RefreshToken"": ""refresh_token""
+          }
+        }
+      },
+      ""Url"": ""https://api.linkedin.com/v2"",
+      ""Endpoints"": [
+        {
+          ""Path"": ""/learningAssets"",
+          ""Method"": ""GET"",
+          ""Paging"": {
+            ""PageSize"": 20,
+            ""OffsetStart"": 0,
+            ""OffsetType"": ""item"",
+            ""NextPageKey"": ""https://api.linkedin.com%[$.paging.links[?(@.rel=='next')].href]"",
+            ""Parameters"": {
+              ""Limit"": ""count"",
+              ""Offset"": ""start""
+            }
+          },
+          ""QueryParameters"": {
+            ""q"": ""localeAndType"",
+            ""assetType"": ""COURSE"",
+            ""sourceLocale.language"": ""en"",
+            ""sourceLocale.country"": ""US""
+          },
+          ""ItemType"": ""Course"",
+          ""ItemPath"": ""elements"",
+          ""Uri"": ""%[details.urls.webLaunch]"",
+          ""ClickableUri"": ""%[details.urls.webLaunch]"",
+          ""Title"": ""%[title.value]"",
+          ""ModifiedDate"": ""%[details.lastUpdatedAt]"",
+          ""Body"": ""%[details.description.value]"",
+          ""Metadata"": {
+            ""publishedat"": ""%[details.publishedAt]"",
+            ""duration"": ""%[details.timeToComplete.duration]"",
+            ""category"": ""%[details.level]"",
+            ""coursetopics"": ""%[details.classifications.associatedclassification.name.value]"",
+            ""coursecontents"": ""%[contents.asset.title.value]""
+          }
+        }
+      ]
+    }
+  ]
+}",,4.09,28,Coveo Labs,148,2023-04-23,2023-09-22
+Mindtickle,A sales readiness and enablement platform for training sales teams.,"Sales Training, Technology, Finance, Pharmaceutical","workplace, platform","Sales Conversion Rate, Employee Performance Index, Return on Equity (ROE), Customer Satisfaction Score (CSAT)",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,This example shows how to index course materials from MindTickle using its reporting API and basic authentication.,17,"In order to fully understand and use this example, you must:
+1. Have a Coveo Platform organization.
+2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
+3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","In MindTickle, course material is organized into three object types: SeriesCollection, SeriesModules, and Module. However in order to index a Module, you must start with the SeriesCollection and obtain the series ID, then get the SeriesModules and obtain the module ID, then get the Module using the series and module ID. Therefore, if you want to index Module items only, you can use the indexing pipeline extension (IPE) in this folder to discard non-Module items.
+
+1. [Create and configure a REST API source](https://docs.coveo.com/en/1896/) using the example in [`SourceJSONConfig.json`](https://github.com/coveooss/connectivity-library/blob/master/Mindtickle/SourceJSONConfig.json). This JSON configuration indexes SeriesCollections through the main endpoint, and then SeriesModules as SeriesCollection subitems, and then Modules as subitems of the SeriesModules. Adjust the configuration example to your own needs.
+2. Make sure you've changed all placeholders in the configuration with your own values.
+3. [Create the appropiate fields and mappings](https://docs.coveo.com/en/1896/#completion).
+4. To reject non-Module items, [write an indexing pipeline extension](https://docs.coveo.com/en/1645/) based on the example in [`IPE.py`](https://github.com/coveooss/connectivity-library/blob/master/Mindtickle/IPE.py).
+5. Check whether your source indexes the desired content properly. You might find you need an additional [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.",,,"{
+  ""Services"": [
+    {
+      ""Url"": ""https://admin.mindtickle.com/Odata.svc"",
+      ""Endpoints"": [
+        {
+          ""Path"": ""/SeriesCollection"",
+          ""Method"": ""GET"",
+          ""QueryParameters"": {
+            ""$format"": ""json"",
+            ""$filter"": ""IsPublic eq 'true'""
+          },
+          ""ItemPath"": ""results"",
+          ""ItemType"": ""Series"",
+          ""Uri"": ""%[coveo_url]/SeriesCollection?$filter=SeriesId eq '%[SeriesId]'&$format=json"",
+          ""ClickableUri"": ""%[coveo_url]/SeriesCollection?$filter=SeriesId eq '%[SeriesId]'&$format=json"",
+          ""Title"": ""%[SeriesName]"",
+          ""ModifiedDate"": ""%[CreationTime]"",
+          ""Metadata"": {
+            ""seriesid"": ""%[SeriesId]"",
+            ""seriesstate"": ""%[SeriesState]"",
+            ""seriesname"": ""%[SeriesName]""
+          },
+          ""SubItems"": [
+            {
+              ""Path"": ""/SeriesModules"",
+              ""Method"": ""GET"",
+              ""QueryParameters"": {
+                ""$format"": ""json"",
+                ""$filter"": ""SeriesId eq '%[coveo_parent.seriesid]'""
+              },
+              ""ItemPath"": ""results"",
+              ""ItemType"": ""SeriesModules"",
+              ""Uri"": ""%[coveo_url]/SeriesModules?$filter=SeriesId eq '%[coveo_parent.seriesid]'&$filter=ModuleId eq '%[ModuleId]&$format=json"",
+              ""ClickableUri"": ""%[coveo_url]/SeriesModules?$filter=SeriesId eq '%[coveo_parent.seriesid]'&$filter=ModuleId eq '%[ModuleId]&$format=json"",
+              ""Metadata"": {
+                ""moduleid"": ""%[ModuleId]""
+              },
+              ""SubItems"": [
+                {
+                  ""Path"": ""/Modules"",
+                  ""Method"": ""GET"",
+                  ""ItemPath"": ""results"",
+                  ""ItemType"": ""Modules"",
+                  ""QueryParameters"": {
+                    ""$format"": ""json"",
+                    ""$filter"": ""ModuleId eq '%[coveo_parent.moduleid]'""
+                  },
+                  ""Uri"": ""%[coveo_url]/Modules?$filter=ModuleId eq '%[ModuleId]&$format=json"",
+                  ""ClickableUri"": ""%[coveo_url]/Modules?$filter=ModuleId eq '%[ModuleId]&$format=json"",
+                  ""Metadata"": {
+                    ""modulename"": ""%[ModuleName]"",
+                    ""moduletype"": ""%[Type]"",
+                    ""modifieddate"": ""%[PublishTime]"",
+                    ""description"": ""%[Description]""
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}","def get_safe_meta_data_value(field):
+  try:
+    return document.get_meta_data_value(field)[-1]
+  except Exception as e:
+    return None
+
+docType = get_safe_meta_data_value(""documenttype"")
+
+if docType and docType != ""Modules"":
+  # Don't waste our time, reject the doc
+  document.reject()",4.02,40,Coveo Labs,112,2021-03-20,2023-05-26
+Moxie KB,A knowledge base solution for managing and sharing information.,"Technology, Customer Service, Retail, Finance","website, service","Customer Satisfaction Score (CSAT), Website Traffic-to-Lead Ratio, Cost Per Lead, Gross Profit Margin",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,This example shows how to index GoMoxie Knowledge Base Articles.,18,"In order to fully understand and use this example, you must:
+1. Have a Coveo Platform organization.
+2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
+3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","You will need to make the four follwing API calls. If you need to test them, you may use Postman, but GoMoxie also usually offers a visual widget to try calls. Its URL should be: `restapi-<<YOUR_DOMAIN>>.kb.net/Widgets/Admin`. If using Chrome, you must open Chrome Dev Tools to see the results of some of those calls.
+* Get Article List (`NewlyPublished`/""Get Newly Published Article"" button) – one call per rebuild
+* Get Article List (`RecentlyUpdated`/""Get Recently Updated Published Article"" button) - one call per rebuild
+* Get Article – one call per document
+* Get Article Metadata – one call per document
+
+**Important:** There are two endpoints that carries same parameters, if you modify/reuse it don't forget to update both endpoints parameters the same way. The two parameters are NewlyPublished (for new articles), and RecentlyUpdated (for new versions of existing articles). When an article is updated with a new version, its record will cease to be part of the NewlyPublished list.
+    
+1. Ensure you have a client ID, an API key, and a profile ID.
+2. [Create a REST API source](https://docs.coveo.com/en/1896/) and, in the **Authorization** section, enter these credentials.
+3. Use the example in [`SourceJSONConfig.json`](https://github.com/coveooss/connectivity-library/commit/fd92a6cd8e2afd6885d6360276cb1d5bc65abe6b) as a base to build your source JSON configuration. This example retrieves the list of articles using the main endpoint, then the body using a subquery, and then metadata using another subquery. Adjust the configuration example to your own needs. 
+4. Make sure you've changed all placeholders in the configuration with your own values.
+5. [Create the appropiate fields and mappings](https://docs.coveo.com/en/1896/#completion).
+6. [Write an indexing pipeline extension](https://docs.coveo.com/en/1645/) based on the example in [`IPE.py`](https://github.com/coveooss/connectivity-library/blob/master/Moxie%20KB/IPE.py).
+5. Check whether your source indexes the desired content properly. You might find you need an additional [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.",,,"{
+  ""Services"": [
+    {
+      ""Url"": ""https://restapi-<<YOUR_COMPANY_NAME>>.kb.net/Admin"",
+      ""Endpoints"": [
+        {
+          ""QueryParameters"": {
+            ""previousTime"": ""2010-@ClientID-01 15:00:00.000"",
+            ""currentTime"": ""2025-01-08 15:00:00.000"",
+            ""profileId"": ""272"",
+            ""pageSize"": ""100"",
+            ""pageNumber"": ""0"",
+            ""clientId"": ""@ClientID"",
+            ""apiKey"": ""@apiKey""
+          },
+          ""Path"": ""/Article/Info/NewlyPublished"",
+          ""Method"": ""GET"",
+          ""ItemType"": ""Article"",
+          ""Uri"": ""https://kbp-<<YOUR_COMPANY_NAME>>.kb.net/#tab:homeTab:crumb:8:artId:%[Id]:src:article"",
+          ""ClickableUri"": ""https://kbp-<<YOUR_COMPANY_NAME>>.kb.net/#tab:homeTab:crumb:8:artId:%[Id]:src:article"",
+          ""Title"": ""%[Name]"",
+          ""ModifiedDate"": ""%[CreateDate]"",
+          ""Metadata"": {
+            ""id"": ""%[Id]"",
+            ""name"": ""%[Name]"",
+            ""clientid"": ""%[ClientId]"",
+            ""creationuserid"": ""%[CreationUserId]"",
+            ""kbid"": ""%[KbId]"",
+            ""templateid"": ""%[TemplateId]"",
+            ""extension"": ""%[Extension]"",
+            ""versionmajorversion"": ""%[Version.MajorVersion]"",
+            ""versionminorversion"": ""%[Version.MinorVersion]"",
+            ""versionusername"": ""%[Version.UserName]"",
+            ""versionfirstname"": ""%[Version.CreateUser.FirstName]"",
+            ""versionlastname"": ""%[Version.CreateUser.LastName]"",
+            ""objecttype"": ""Knowledge""
+          },
+          ""SubQueries"": [
+            {
+              ""Path"": ""%[coveo_url]/Article/Content"",
+              ""Method"": ""GET"",
+              ""QueryParameters"": {
+                ""ClientId"": ""@ClientID"",
+                ""ApiKey"": ""@apiKey"",
+                ""userId"": ""<<ADD_HERE_YOUR_PROFILE_ID>>"",
+                ""articleId"": ""%[coveo_parent.id]""
+              },
+              ""IsBinaryBody"": true
+            },
+            {
+              ""Path"": ""%[coveo_url]/Article/MetaData"",
+              ""Method"": ""GET"",
+              ""QueryParameters"": {
+                ""ClientId"": ""@ClientID"",
+                ""ApiKey"": ""@apiKey"",
+                ""userId"": ""<<ADD_HERE_YOUR_PROFILE_ID>>"",
+                ""articleId"": ""%[coveo_parent.id]""
+              },
+              ""Metadata"": {
+                ""relatedarticleids"": ""%[$.RelatedArticles[*].Id]"",
+                ""relatedarticlenames"": ""%[$.RelatedArticles[*].Name]"",
+                ""articlegroupnames"": ""%[$.ArticleGroups[*].Name]"",
+                ""categorynames"": ""%[$.Categories[*].Name]"",
+                ""manualsummary"": ""ManualSummary""
+              }
+            }
+          ]
+        },
+        {
+          ""QueryParameters"": {
+            ""previousTime"": ""2010-@ClientID-01 15:00:00.000"",
+            ""currentTime"": ""2025-01-08 15:00:00.000"",
+            ""profileId"": ""272"",
+            ""pageSize"": ""100"",
+            ""pageNumber"": ""0"",
+            ""clientId"": ""@ClientID"",
+            ""apiKey"": ""@apiKey""
+          },
+          ""Path"": ""/Article/Info/RecentlyUpdated"",
+          ""Method"": ""GET"",
+          ""ItemType"": ""Article"",
+          ""Uri"": ""https://kbp-<<YOUR_COMPANY_NAME>>.kb.net/#tab:homeTab:crumb:8:artId:%[Id]:src:article"",
+          ""ClickableUri"": ""https://kbp-<<YOUR_COMPANY_NAME>>.kb.net/#tab:homeTab:crumb:8:artId:%[Id]:src:article"",
+          ""Title"": ""%[Name]"",
+          ""ModifiedDate"": ""%[CreateDate]"",
+          ""Metadata"": {
+            ""id"": ""%[Id]"",
+            ""name"": ""%[Name]"",
+            ""clientid"": ""%[ClientId]"",
+            ""creationuserid"": ""%[CreationUserId]"",
+            ""kbid"": ""%[KbId]"",
+            ""templateid"": ""%[TemplateId]"",
+            ""extension"": ""%[Extension]"",
+            ""versionmajorversion"": ""%[Version.MajorVersion]"",
+            ""versionminorversion"": ""%[Version.MinorVersion]"",
+            ""versionusername"": ""%[Version.UserName]"",
+            ""versionfirstname"": ""%[Version.CreateUser.FirstName]"",
+            ""versionlastname"": ""%[Version.CreateUser.LastName]"",
+            ""objecttype"": ""Knowledge""
+          },
+          ""SubQueries"": [
+            {
+              ""Path"": ""%[coveo_url]/Article/Content"",
+              ""Method"": ""GET"",
+              ""QueryParameters"": {
+                ""ClientId"": ""@ClientID"",
+                ""ApiKey"": ""@apiKey"",
+                ""userId"": ""<<ADD_HERE_YOUR_PROFILE_ID>>"",
+                ""articleId"": ""%[coveo_parent.id]""
+              },
+              ""IsBinaryBody"": true
+            },
+            {
+              ""Path"": ""%[coveo_url]/Article/MetaData"",
+              ""Method"": ""GET"",
+              ""QueryParameters"": {
+                ""ClientId"": ""@ClientID"",
+                ""ApiKey"": ""@apiKey"",
+                ""userId"": ""<<ADD_HERE_YOUR_PROFILE_ID>>"",
+                ""articleId"": ""%[coveo_parent.id]""
+              },
+              ""Metadata"": {
+                ""relatedarticleids"": ""%[$.RelatedArticles[*].Id]"",
+                ""relatedarticlenames"": ""%[$.RelatedArticles[*].Name]"",
+                ""articlegroupnames"": ""%[$.ArticleGroups[*].Name]"",
+                ""categorynames"": ""%[$.Categories[*].Name]"",
+                ""manualsummary"": ""ManualSummary""
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}","from dateutil import parser
+ 
+def get_safe_meta_data(meta_data_name):
+    safe_meta = ''
+    meta_data_value = document.get_meta_data_value(meta_data_name)
+    if len(meta_data_value) > 0:
+        safe_meta = meta_data_value[-1]
+    return safe_meta
+ 
+def get_modified_date(): 
+    str_date = get_safe_meta_data('raw.version.createdate')
+    #str_date: 2019-02-28 15:14:26Z
+ 
+    date_date = parser.parse(str_date, fuzzy=True)
+    #date_date:2019-02-28 15:14:26+00:00
+ 
+    document.add_meta_data({'date':date_date})
+ 
+get_modified_date()",4.83,37,Coveo Labs,272,2021-05-03,2023-04-17
+Pendo Feedback,A platform for product teams to capture user feedback and improve product experiences.,"Software Development, Technology, E-commerce, Marketing","platform, service","Customer Churn Rate, Customer Satisfaction Score (CSAT), Market Penetration Rate, Lead-to-Customer Conversion Rate",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,This example shows how to retrieve Features(cases) submit to the [Pendo Feedback](https://app.pendo.io/) platform and the comments on each Feature.,19,"To fully understand how to use this example, you must:
+1. Have a Coveo Platform organization.
+2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
+3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Get a Pendo Feeback API key](https://support.pendo.io/hc/en-us/articles/360042025452-Salesforce-Integration-Setup-for-Feedback#h_6cb2d977-ee2b-4b8f-aa24-66455c2d4b9d).
+2. [Create a REST API source](https://docs.coveo.com/en/1896/) and, in the **Authorization** section, provide the API key obtained in step 1.
+3. Use the example in [`SourceJSONConfig.json`](https://github.com/coveooss/connectivity-library/blob/master/Pendo%20Feedback/SourceJSONConfig.json) as a base to build your source JSON configuration. Adjust it to your own needs.
+4. Make sure you've changed all placeholders in the configuration with your own values.
+5. [Create the appropiate fields and mappings](https://docs.coveo.com/en/1896/#completion).
+6. Check whether your source indexes the desired content properly. You might find you need an additional [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.",[Pendo Feedback API documentation](https://developers.pendo.io/docs/?bash#),,"{
+    ""Services"": [
+        {
+            ""Url"": ""<<ADD_YOUR_PENDO_FEEDBACK_URL>>"",
+            ""Paging"": {
+                ""PageSize"": 30,
+                ""OffsetStart"": 0,
+                ""OffsetType"": ""item"",
+                ""Parameters"": {
+                    ""Limit"": ""limit"",
+                    ""Offset"": ""start""
+                }
+            },
+            ""Endpoints"": [
+                {
+                    ""Path"": ""/features"",
+                    ""Method"": ""GET"",
+                    ""QueryParameters"": {
+                        ""auth-token"": ""@ApiKey""
+                    },
+                    ""ItemType"": ""Feature"",
+                    ""Uri"": ""%[coveo_url]/features/%[id]"",
+                    ""ClickableUri"": ""%[app_url]"",
+                    ""Body"": ""%[description]"",
+                    ""Title"": ""%[title]"",
+                    ""Date"": ""%[created_at]"",
+                    ""ModifiedDate"": ""%[updated_at]"",
+                    ""IndexingAction"": {
+                        ""ActionOnItem"": ""Ignore"",
+                        ""Condition"": ""%[is_private] == \""True\""""
+                    },
+                    ""Metadata"": {
+                        ""description"": ""%[description]"",
+                        ""title"": ""%[title]"",
+                        ""filetype"": ""Feature"",
+                        ""status"": ""%[status]"",
+                        ""resolution"": ""%[resolution]"",
+                        ""groups"": ""%[groups]"",
+                        ""products"": ""%[products[*]]"",
+                        ""is_private"": ""%[is_private]"",
+                        ""created_at"": ""%[created_at]"",
+                        ""updated_at"": ""%[updated_at]"",
+                        ""declined_at"": ""%[declined_at]"",
+                        ""developing_at"": ""%[developing_at]"",
+                        ""planned_at"": ""%[planned_at]"",
+                        ""released_at"": ""%[waiting_at]"",
+                        ""waiting_at"": ""%[waiting_at]"",
+                        ""status_changed_at"": ""%[status_changed_at]"",
+                        ""seen_case"": ""%[seen_case]"",
+                        ""effort"": ""%[effort]"",
+                        ""created_by_user_id"": ""%[created_by_user_id]"",
+                        ""updated_by_user_id"": ""%[updated_by_user_id]"",
+                        ""resolved_by_user_id"": ""%[resolved_by_user_id]"",
+                        ""id"": ""%[id]"",
+                        ""receptive_feature_url"": ""%[app_url]"",
+                        ""api_url"": ""%[coveo_url]/features/%[id]"",
+                        ""uploads"": ""%[uploads]"",
+                        ""vendor_id"": ""%[vendor_id]""
+                    },
+                    ""SubQueries"": [
+                        {
+                            ""Path"": ""%[coveo_parent.api_url]"",
+                            ""Method"": ""GET"",
+                            ""QueryParameters"": {
+                                ""auth-token"": ""@ApiKey""
+                            },
+                            ""Metadata"": {
+                                ""views"": ""%[view_count]""
+                            }
+                        },
+                        {
+                            ""Path"": ""/votes"",
+                            ""QueryParameters"": {
+                                ""feature_id"": ""%[coveo_parent.id]"",
+                                ""auth-token"": ""@ApiKey"",
+                                ""positive"": ""true""
+                            },
+                            ""Method"": ""GET"",
+                            ""Metadata"": {
+                                ""vote_quantities"": ""%[[*].quantity]""
+                            }
+                        }
+                    ],
+                    ""SubItems"": [
+                        {
+                            ""Path"": ""/comments"",
+                            ""QueryParameters"": {
+                                ""case"": ""%[coveo_parent.id]"",
+                                ""auth-token"": ""@ApiKey""
+                            },
+                            ""IndexingAction"": {
+                                ""ActionOnItem"": ""Ignore"",
+                                ""Condition"": ""%[is_private] == \""True\""""
+                            },
+                            ""ItemType"": ""Comment"",
+                            ""ItemPath"": ""feeback.comments"",
+                            ""Uri"": ""%[coveo_url]/comments/%[id]"",
+                            ""ClickableUri"": ""%[coveo_parent.app_url]/#commentList"",
+                            ""Body"": ""%[text]"",
+                            ""Title"": ""%[user.name]"",
+                            ""Date"": ""%[created_at]"",
+                            ""ModifiedDate"": ""%[updated_at]"",
+                            ""Method"": ""GET"",
+                            ""Metadata"": {
+                                ""id"": ""%[id]"",
+                                ""case_id"": ""%[case_id]"",
+                                ""user_id"": ""%[user_id]"",
+                                ""text"": ""%[text]"",
+                                ""is_private"": ""%[is_private]"",
+                                ""created_at"": ""%[created_at]"",
+                                ""updated_at"": ""%[updated_at]"",
+                                ""from_email"": ""%[from_email]"",
+                                ""user_full_name"": ""%[user.name]"",
+                                ""user_url"": ""%[user.url]""
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+",,4.78,35,Coveo Labs,173,2020-10-13,2023-01-22
+Sitecore Content Hub,"A digital experience platform for managing content, marketing, and commerce.","Marketing, Retail, Media, Technology","website, commerce, platform","Website Traffic-to-Lead Ratio, Average Order Value (AOV), Market Penetration Rate, Customer Satisfaction Score (CSAT)",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,This example shows how to index Sitecore Content Hub.,20,"To fully understand how to use this example, you must:
+1. Have a Coveo organization.
+2. Learn about [Coveo connectivity](https://docs.coveo.com/en/1702/).
+3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Create a token](https://doc.sitecore.com/ch/en/developers/42/cloud-dev/rest-api--get-token.html) to access the Content Hub REST API.
+2. [Log in to your Coveo organization](https://platform.cloud.coveo.com).
+3. Under **Sources**, [create a REST API source](https://docs.coveo.com/en/1896/):
+    1. In the **Authentication** section, enter your previously created token in the API key field.
+    2. Under **Content to Include**, enter your source JSON configuration. Use the example in [`SourceJSONConfig.json`](https://github.com/coveooss/connectivity-library/blob/master/Sitecore%20Content%20Hub/SourceJSONConfig.json) as a base.
+    3. Make sure you replace the `{Your Content Hub Domain}` placeholder with your site's URL.
+    4. Add or update the `Endpoints` section according to your data structure in Sitecore Content Hub.
+    5. See the [Understanding the `SourceJSONConfig.json` file](#understanding-the-sourcejsonconfig-json-file) section for explanations on the key aspects of the configuration.
+4. [Create the appropriate fields and mappings](https://docs.coveo.com/en/1896/#completion).
+5. Check whether your source indexes the desired content properly. You might find you need an [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.","
+[Sitecore Content Hub REST API documentation](https://doc.sitecore.com/ch/en/developers/42/cloud-dev/rest-api--about.html)
+
+[REST API source concepts](https://docs.coveo.com/en/3131/)
+
+[REST API source reference](https://docs.coveo.com/en/1525/)",,"{
+    ""services"": [
+      {
+        ""url"": ""https://{Your Content Hub Domain}.sitecorecontenthub.cloud/api/entities"",
+        ""headers"": {
+          ""X-Auth-Token"": ""@ApiKey""
+        },
+        ""endpoints"": [
+          {
+            ""path"": ""query"",
+            ""method"": ""GET"",
+            ""queryParameters"": {
+              ""query"": ""Definition.Name=='M.Asset'&parent('AssetTypeToAsset').id==34138""
+            },
+            ""paging"": {
+              ""pageSize"": 10,
+              ""offsetType"": ""url"",
+              ""nextPageKey"": ""next.href"",
+              ""parameters"": {
+                ""limit"": ""take""
+              }
+            },
+            ""itemPath"": ""items"",
+            ""itemType"": ""File"",
+            ""uri"": ""%[self.href]"",
+            ""clickableUri"": ""%[self.href]"",
+            ""metadata"": {
+              ""assetid"": ""%[id]"",
+              ""donotshow"": ""%[properties.DoNotShow]"",
+              ""description"": ""%[properties.Description.en-US]"",
+              ""title"": ""%[properties.Title]"",
+              ""lastmodified"": ""%[properties.LastModified]"",
+              ""modifiedon"": ""%[modified_on]"",
+              ""availabilitytoasset"": ""%[related_paths.AvailabilityToAsset[0][0].values.en-US]"",
+              ""websitegrouptoasset"": ""%[related_paths.WebsiteGroupToAsset[*][0].values.en-US]""
+            },
+            ""IndexingAction"": {
+              ""ActionOnItem"": ""Ignore""
+            },
+            ""SubItems"": [
+              {
+                ""path"": ""%[coveo_parent.raw.relations.AssetToPublicLink.href]"",
+                ""method"": ""GET"",
+                ""itemType"": ""File"",
+                ""uri"": ""%[coveo_parent.raw.self.href]"",
+                ""clickableUri"": ""%[coveo_parent.raw.self.href]"",
+                ""metadata"": {
+                  ""assetid"": ""%[coveo_parent.assetid]"",
+                  ""description"": ""%[coveo_parent.description]"",
+                  ""title"": ""%[coveo_parent.title]"",
+                  ""lastmodified"": ""%[coveo_parent.lastmodified]"",
+                  ""modifiedon"": ""%[coveo_parent.modifiedon]"",
+                  ""keywords"": ""%[coveo_parent.raw.properties.Keywords]"",
+                  ""availability"": ""%[coveo_parent.availabilitytoasset]"",
+                  ""websitegroup"": ""%[coveo_parent.websitegrouptoasset]"",
+                  ""assettopubliclinkchildren"": ""%[children[0].href]""
+                },
+                ""IndexingAction"": {
+                  ""ActionOnItem"": ""Ignore"",
+                  ""Condition"": ""%[coveo_parent.donotshow]=='True'""
+                },
+                ""SubQueries"": [
+                  {
+                    ""path"": ""%[coveo_parent.assettopubliclinkchildren]"",
+                    ""method"": ""GET"",
+                    ""metadata"": {
+                      ""publiclink"": ""%[public_link]""
+                    }
+                  },
+                  {
+                    ""path"": ""%[coveo_parent.coveo_parent.raw.renditions.downloadOriginal.href]"",
+                    ""method"": ""GET"",
+                    ""IsBinaryBody"": true
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }",,4.87,24,Coveo Labs,132,2023-07-28,2023-11-26
+Skilljar LMS,"A customer training platform that helps businesses onboard, engage, and retain customers.","Corporate Training, Technology, Education, Sales","workplace, platform","Employee Performance Index, Customer Satisfaction Score (CSAT), Return on Assets (ROA), Sales Conversion Rate",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,This example shows how to index Skilljar training content.,21,"In order to fully understand and use this example, you must:
+1. Have a Coveo Platform organization.
+2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
+3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","The two typical objects that get indexed are:
+* Published courses: `https://api.skilljar.com/v1/domains/training.<<YOUR_DOMAIN>>.com/published-courses`
+* Course series: `https://api.skilljar.com/v1/domains/training.<<YOUR_DOMAIN>>.com/course-series`
+
+1. Get Skilljar API key using basic authentication.
+2. [Create a REST API source](https://docs.coveo.com/en/1896/) and, in the **Authorization** section, enter your API key.
+3. Use the example in [`SourceJSONConfig.json`](https://github.com/coveooss/connectivity-library/blob/master/Skilljar%20LMS/SourceJSONConfig.json) as a base to build your source JSON configuration. This example retrieves the list of published courses with the first endpoint, the course description using a subquery in the first endpoint, and the course series with the second endpoint. Adjust the configuration example to your own needs.
+4. Make sure you've changed all placeholders in the configuration with your own values.
+5. [Create the appropiate fields and mappings](https://docs.coveo.com/en/1896/#completion).
+6. Check whether your source indexes the desired content properly. You might find you need an [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.","* [Getting started with the Skilljar API](http://support.skilljar.com/hc/en-us/articles/203811260-Getting-started-with-the-Skilljar-API)
+* [Skilljar API Endpoint Reference](https://api.skilljar.com/docs/#!/domains)",,"{
+  ""Services"": [
+    {
+      ""Url"": ""https://api.skilljar.com/v1"",
+      ""Paging"": {
+        ""PageSize"": 100,
+        ""OffsetType"": ""url"",
+        ""Parameters"": {
+          ""Limit"": ""limit""
+        },
+        ""NextPageKey"": ""next"",
+        ""TotalCountKey"": ""count""
+      },
+      ""Endpoints"": [
+        {
+          ""Path"": ""/domains/training.<<ADD_YOUR_DOMAIN_HERE>>.com/published-courses"",
+          ""Method"": ""GET"",
+          ""Headers"": {
+            ""Authorization"": ""Basic @ApiKey"",
+            ""Accept"": ""application/json""
+          },
+          ""ItemPath"": ""results"",
+          ""ItemType"": ""Courses"",
+          ""Uri"": ""%[course_url]"",
+          ""ClickableUri"": ""%[course_url]"",
+          ""Title"": ""%[course.title]"",
+          ""SubQueries"": [
+            {
+              ""Path"": ""/domains/training.<<ADD_YOUR_DOMAIN_HERE>>.com/published-courses/%[coveo_parent.raw.id]"",
+              ""Method"": ""GET"",
+              ""Headers"": {
+                ""Authorization"": ""Basic @ApiKey"",
+                ""Accept"": ""application/json""
+              },
+              ""Metadata"": {
+                ""short_description"": ""%[course.short_description]"",
+                ""long_description_html"": ""%[course.long_description_html]""
+              }
+            }
+          ],
+          ""Metadata"": {
+            ""skjid"": ""%[id]""
+          }
+        },
+        {
+          ""Path"": ""/domains/training.<<ADD_YOUR_DOMAIN_HERE>>.com/course-series"",
+          ""Method"": ""GET"",
+          ""Headers"": {
+            ""Authorization"": ""Basic @ApiKey"",
+            ""Accept"": ""application/json""
+          },
+          ""ItemPath"": ""results"",
+          ""ItemType"": ""Series"",
+          ""Uri"": ""%[series_url]"",
+          ""ClickableUri"": ""%[series_url]"",
+          ""Title"": ""%[title]"",
+          ""Metadata"": {
+            ""skjid"": ""%[id]""
+          }
+        }
+      ]
+    }
+  ]
+}",,4.98,29,Coveo Labs,277,2021-09-29,2023-04-24
+Slack,"A messaging app for teams, enabling collaboration across organizations.","Technology, Corporate, Media, Education","workplace, service","Employee Performance Index, Customer Satisfaction Score (CSAT), Gross Profit Margin, Working Capital Ratio",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,This examples shows you how to index Slack.,22,"To use this example, you must:
+1. Have a Coveo Platform organization.
+2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
+3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Create a Slack bot application](https://api.slack.com/authentication/basics#calling).
+2. Assign permissions to the application and generate a token:
+   1. Under **OAuth & Permissions**, assign the `channels:read` and `channels:history` scopes and get the bot token. You'll need it to install the application on your Slack instance.
+3. Find your Slack ID: open Slack in a browser window and, in the URL, take the ID right after `/client/`. You'll need it to generate clickable links.
+4. Invite your application in the channels that you want to index.
+5. [Create a REST API source](https://docs.coveo.com/en/1896/) and, in the **Authorization** section, enter the token you obtained at step 2.
+6. Use the example in [`SourceJSONConfig.json`](https://github.com/coveooss/connectivity-library/blob/master/Slack/SourceJSONConfig.json) as a base to build your source JSON configuration. This example has one endpoint to get the Slack channels, which includes a subquery to get the messages in each channel, and another endpoint to get the members. Adjust the configuration example to your own needs.
+7. Make sure you've changed all placeholders in the configuration with your own values.
+8. [Create the appropiate fields and mappings](https://docs.coveo.com/en/1896/#completion).
+9. Check whether your source indexes the desired content properly. You might find you need an [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.
+
+#","* [Legacy token](https://get.slack.help/hc/en-us/articles/215770388-Create-and-regenerate-API-tokens#-internal-app-tokens)
+* [OAuth](https://api.slack.com/docs/oauth)
+* [API](https://api.slack.com/methods/conversations.history)",,"{
+  ""Services"": [
+    {
+      ""Url"": ""https://<<ENTER_YOUR_SLACK>>.slack.com/"",
+      ""Paging"": {
+        ""OffsetType"": ""cursor"",
+        ""NextPageKey"": ""response_metadata.next_cursor"",
+        ""PageSize"": 1000,
+        ""Parameters"": {
+          ""Limit"": ""limit"",
+          ""Offset"": ""cursor""
+        }
+      },
+      ""Endpoints"": [
+        {
+          ""Method"": ""GET"",
+          ""Path"": ""/api/conversations.list/"",
+          ""QueryParameters"": {
+            ""types"": ""public_channel"",
+            ""token"": ""@ApiKey""
+          },
+          ""ItemPath"": ""channels"",
+          ""ItemType"": ""Channel"",
+          ""Uri"": ""%[coveo_url]/channel/%[id]"",
+          ""ClickableUri"": ""https://app.slack.com/client/<<ENTER_YOUR_SLACK_ID>>/%[id]"",
+          ""Title"": ""%[name]"",
+          ""ModifiedDate"": ""%[created]"",
+          ""Metadata"": {
+            ""id"": ""%[id]"",
+            ""name"": ""%[name]"",
+            ""topic"": ""%[topic.value]"",
+            ""purpose"": ""%[purpose.value]"",
+            ""nummembers"": ""%[num_members]""
+          },
+          ""ProcessingAction"": {
+            ""ActionOnItem"": ""Ignore"",
+            ""Condition"": ""%[raw.is_member]=='true'""
+          },
+          ""SubItems"": [
+            {
+              ""Method"": ""GET"",
+              ""Path"": ""/api/conversations.history/"",
+              ""QueryParameters"": {
+                ""channel"": ""%[coveo_parent.id]"",
+                ""token"": ""@ApiKey""
+              },
+              ""ItemPath"": ""messages"",
+              ""ItemType"": ""Messages"",
+              ""Uri"": ""%[coveo_url]/message/%[ts]"",
+              ""ClickableUri"": ""%[coveo_url]/archives/%[coveo_parent.id]/p%[ts]"",
+              ""Title"": ""Message from %[user]"",
+              ""ModifiedDate"": ""%[coveo_parent.raw.created]"",
+              ""Body"": ""%[text]"",
+              ""Metadata"": {
+                ""id"": ""%[ts]"",
+                ""user"": ""%[user]"",
+                ""subtype"": ""%[subtype]""
+              },
+              ""IndexingAction"": {
+                ""ActionOnItem"": ""Ignore"",
+                ""Condition"": ""%[subtype]=='channel_join' OR %[subtype]=='thread_broadcast' OR %[subtype]=='slackbot_response'""
+              }
+            }
+          ]
+        },
+        {
+          ""Method"": ""GET"",
+          ""Path"": ""/api/users.list/"",
+          ""QueryParameters"": {
+            ""token"": ""@ApiKey""
+          },
+          ""ItemPath"": ""members"",
+          ""ItemType"": ""Members"",
+          ""Uri"": ""%[coveo_url]/users/%[id]"",
+          ""ClickableUri"": ""https://app.slack.com/users/<<ENTER_YOUR_SLACK_ID>>/%[id]"",
+          ""Title"": ""%[profile.real_name]"",
+          ""Metadata"": {
+            ""id"": ""%[id]"",
+            ""name"": ""%[name]"",
+            ""realname"": ""%[profile.real_name]"",
+            ""photo"": ""%[profile.image_512]""
+          },
+          ""SubQueries"": [
+            {
+              ""Path"": ""%[coveo_parent.photo]"",
+              ""Method"": ""GET"",
+              ""IsBinaryBody"": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}",,4.8,30,Coveo Labs,198,2022-02-09,2023-03-21
+Spigit,An innovation management software for crowdsourcing ideas and solutions.,"Innovation Management, Technology, Finance, Healthcare","workplace, platform","Innovation Metrics, Market Penetration Rate, Employee Performance Index, Customer Satisfaction Score (CSAT)",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,This example shows how to index content from Spigit.,23,"To fully understand and use this example, you must:
+1. Have a Coveo Platform organization.
+2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
+3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. Using your Spigit account, [create a new Spigit application](https://support.spigit.com/hc/en-us/articles/115001307506-API-Getting-Started). The documentation URL should be: `https://<<YOUR_INSTANCE_ID>>.spigit.com/docs/api/index.html`.
+2. Get an autorization code by using the following URL: `https://{communityName}.spigit.com/oauth/authorize?response_type=code&client_id={clientID}&client_secret={clientSecret}s&redirect_uri={redirect_uri}` in which you replace:
+    * `{communityName}` with your Spigit community name
+    * `{clientId}` with your application client ID
+    * `{clientSecret}` with your application client secret
+    * `{redirect_uri}` with your application redirect URI (e.g., `https://<<YOUR_INSTANCE_ID>.spigit.com/html/api/testOauthRedirectPage.html`)
+    This code will be required later by the REST API source to generate a refresh token.
+3. [Create a REST API source](https://docs.coveo.com/en/1896/) and, in the **Authorization** section, enter your application client ID, client secret, and refresh token.
+4. Use the example in [`SourceJSONConfig.json`](https://github.com/coveooss/connectivity-library/blob/master/Spigit/SourceJSONConfig.json) as a base to build your source JSON configuration. This example has one endpoint to get the Slack channels, which includes a subquery to get the messages in each channel, and another endpoint to get the members. Adjust the configuration example to your own needs.
+5. Make sure you've changed all placeholders in the configuration with your own values.
+6. [Create the appropiate fields and mappings](https://docs.coveo.com/en/1896/#completion).
+7. Check whether your source indexes the desired content properly. You might find you need an [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.",,,"{
+  ""Services"": [
+    {
+      ""Authentication"": {
+        ""OAuth"": {
+          ""Headers"": {
+            ""Content-Type"": ""application/x-www-form-urlencoded""
+          },
+          ""Query"": {
+            ""RefreshUrl"": ""https://<<YOUR_INSTANCE_ID>>.spigit.com/oauth/token"",
+            ""Method"": ""POST"",
+            ""Parameters"": {
+              ""grant_type"": {
+                ""Type"": ""Payload"",
+                ""Value"": ""authorization_code""
+              },
+              ""code"": {
+                ""Type"": ""Payload"",
+                ""Value"": ""<CODE>""
+              },
+              ""refresh_token"": {
+                ""Type"": ""Payload"",
+                ""Value"": ""@RefreshToken"",
+                ""IsRefreshToken"": true
+              },
+              ""client_id"": {
+                ""Type"": ""Payload"",
+                ""Value"": ""@ClientId""
+              },
+              ""client_secret"": {
+                ""Type"": ""Payload"",
+                ""Value"": ""@ClientSecret""
+              }
+            }
+          },
+          ""Response"": {
+            ""AccessToken"": ""access_token"",
+            ""SupportsRefreshToken"": ""true"",
+            ""RefreshToken"": ""refresh_token"",
+            ""ExpiresIn"": ""expires_in"",
+            ""TokenType"": ""token_type""
+          }
+        }
+      },
+      ""Url"": ""https://<<YOUR_INSTANCE_ID>>.spigit.com/api/v1"",
+      ""Endpoints"": [
+        {
+          ""Path"": ""/communities"",
+          ""Method"": ""GET"",
+          ""QueryParameters"": {
+            ""site_type"": ""regular""
+          },
+          ""Paging"": {
+            ""PageSize"": 100,
+            ""OffsetStart"": 0,
+            ""OffsetType"": ""item"",
+            ""TotalCountKey"": ""total_count"",
+            ""Parameters"": {
+              ""Limit"": ""limit"",
+              ""Offset"": ""offset""
+            }
+          },
+          ""ItemType"": ""Community"",
+          ""ItemPath"": ""content"",
+          ""Uri"": ""https://%[community_name]"",
+          ""ClickableUri"": ""https://%[community_name]"",
+          ""ModifiedDate"": ""%[created_date]"",
+          ""Title"": ""%[title]"",
+          ""Body"": ""%[description]"",
+          ""Metadata"": {
+            ""id"": ""%[id]"",
+            ""spicommunityname"": ""%[title]"",
+            ""spicommunitytype"": ""%[type]"",
+            ""spicommunityaccesstype"": ""%[access_type]"",
+            ""spicommunitychallengestatus"": ""%[challenge_status]"",
+            ""spicommunitysitetype"": ""%[site_type]"",
+            ""spicommunityparentid"": ""%[parent_id]"",
+            ""spicommunityhidden"": ""%[hidden]"",
+            ""spicommunitydisabled"": ""%[disabled]"",
+            ""spicommunitycandelete"": ""%[can_delete]"",
+            ""spicommunitycreateddate"": ""%[created_date]"",
+            ""spicommunitystartdate"": ""%[start_date]"",
+            ""spicommunityenddate"": ""%[end_date]""
+          },
+          ""SubItems"": [
+            {
+              ""Paging"": {
+                ""PageSize"": 100,
+                ""OffsetStart"": 0,
+                ""OffsetType"": ""item"",
+                ""TotalCountKey"": ""total_count"",
+                ""Parameters"": {
+                  ""Limit"": ""limit"",
+                  ""Offset"": ""offset""
+                }
+              },
+              ""Path"": ""%[coveo_url]/communities/%[coveo_parent.id]/ideas"",
+              ""Method"": ""GET"",
+              ""ItemType"": ""Idea"",
+              ""ItemPath"": ""content"",
+              ""Uri"": ""https://%[coveo_parent.raw.community_name]/Page/ViewIdea?ideaid=%[id]"",
+              ""ClickableUri"": ""https://%[coveo_parent.raw.community_name]/Page/ViewIdea?ideaid=%[id]"",
+              ""Title"": ""%[title]"",
+              ""Metadata"": {
+                ""id"": ""%[id]"",
+                ""spiparentid"": ""%[coveo_parent.id]"",
+                ""spicommunityname"": ""%[coveo_parent.raw.title]"",
+                ""spiideaauthorname"": ""%[creator_display_name]"",
+                ""spiideaauthorid"": ""%[creator_id]""
+              },
+              ""SubQueries"": [
+                {
+                  ""Path"": ""%[coveo_url]/ideas/%[coveo_parent.id]"",
+                  ""Method"": ""GET"",
+                  ""Body"": ""<html>%[content]</html>"",
+                  ""ModifiedDate"": ""%[created_date]"",
+                  ""Metadata"": {
+                    ""spiideacreateddate"": ""%[created_date]""
+                  }
+                },
+                {
+                  ""Path"": ""%[coveo_url]/ideas/%[coveo_parent.id]/comments"",
+                  ""Method"": ""GET"",
+                  ""QueryParameters"": {
+                    ""offset"": ""0"",
+                    ""limit"": ""100"",
+                    ""sort"": ""CREATED_DATE"",
+                    ""answer_status"": ""all""
+                  },
+                  ""Metadata"": {
+                    ""spicommentauthors"": ""%[content[*].creator_display_name]""
+                  }
+                },
+                {
+                  ""Path"": ""%[coveo_url]/ideas/%[coveo_parent.id]/stats"",
+                  ""Method"": ""GET"",
+                  ""Metadata"": {
+                    ""spiideastageid"": ""%[stage_id]"",
+                    ""spiideastagename"": ""%[stage_name]"",
+                    ""spiideacategoryid"": ""%[category_id]"",
+                    ""spiideacategoryname"": ""%[category_name]"",
+                    ""spiideaqualifiedpageview"": ""%[qualified_page_view]"",
+                    ""spiideatotalpageviews"": ""%[total_page_views]"",
+                    ""spiideaoverallstarrating"": ""%[over_all_star_rating]"",
+                    ""spiideacommentthreadnum"": ""%[comment_thread_num]"",
+                    ""spiideacommentrepliesnum"": ""%[comment_replies_num]"",
+                    ""spiideaideateammembernum"": ""%[idea_team_member_num]"",
+                    ""spiideapairwiserank"": ""%[pair_wise_rank]"",
+                    ""spiideareviewnum"": ""%[review_num]"",
+                    ""spiideaavgreviewscore"": ""%[avg_review_score]""
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          ""Path"": ""/communities"",
+          ""Method"": ""GET"",
+          ""QueryParameters"": {
+            ""site_type"": ""challenge""
+          },
+          ""Paging"": {
+            ""PageSize"": 100,
+            ""OffsetStart"": 0,
+            ""OffsetType"": ""item"",
+            ""TotalCountKey"": ""total_count"",
+            ""Parameters"": {
+              ""Limit"": ""limit"",
+              ""Offset"": ""offset""
+            }
+          },
+          ""ItemType"": ""Community"",
+          ""ItemPath"": ""content"",
+          ""Uri"": ""https://%[community_name]"",
+          ""ClickableUri"": ""https://%[community_name]"",
+          ""Title"": ""%[title]"",
+          ""Body"": ""%[description]"",
+          ""ModifiedDate"": ""%[created_date]"",
+          ""Metadata"": {
+            ""id"": ""%[id]"",
+            ""spichallengename"": ""%[title]"",
+            ""spicommunitytype"": ""%[type]"",
+            ""spicommunityaccesstype"": ""%[access_type]"",
+            ""spicommunitychallengestatus"": ""%[challenge_status]"",
+            ""spicommunitysitetype"": ""%[site_type]"",
+            ""spicommunityparentid"": ""%[parent_id]"",
+            ""spicommunityhidden"": ""%[hidden]"",
+            ""spicommunitydisabled"": ""%[disabled]"",
+            ""spicommunitycandelete"": ""%[can_delete]"",
+            ""spicommunitycreateddate"": ""%[created_date]"",
+            ""spicommunitystartdate"": ""%[start_date]"",
+            ""spicommunityenddate"": ""%[end_date]""
+          },
+          ""SubQueries"": [
+            {
+              ""Path"": ""%[coveo_url]/communities/%[coveo_parent.raw.parent_id]"",
+              ""Method"": ""GET"",
+              ""Metadata"": {
+                ""spicommunityname"": ""%[title]""
+              }
+            }
+          ],
+          ""SubItems"": [
+            {
+              ""Paging"": {
+                ""PageSize"": 100,
+                ""OffsetStart"": 0,
+                ""OffsetType"": ""item"",
+                ""TotalCountKey"": ""total_count"",
+                ""Parameters"": {
+                  ""Limit"": ""limit"",
+                  ""Offset"": ""offset""
+                }
+              },
+              ""Path"": ""%[coveo_url]/communities/%[coveo_parent.id]/ideas"",
+              ""Method"": ""GET"",
+              ""ItemType"": ""Idea"",
+              ""ItemPath"": ""content"",
+              ""Uri"": ""https://%[coveo_parent.raw.community_name]/Page/ViewIdea?ideaid=%[id]"",
+              ""ClickableUri"": ""https://%[coveo_parent.raw.community_name]/Page/ViewIdea?ideaid=%[id]"",
+              ""Title"": ""%[title]"",
+              ""Metadata"": {
+                ""id"": ""%[id]"",
+                ""spiparentid"": ""%[coveo_parent.id]"",
+                ""spicommunityname"": ""%[coveo_parent.spicommunityname]"",
+                ""spichallengename"": ""%[coveo_parent.spichallengename]"",
+                ""spiideaauthorname"": ""%[creator_display_name]"",
+                ""spiideaauthorid"": ""%[creator_id]""
+              },
+              ""SubQueries"": [
+                {
+                  ""Path"": ""%[coveo_url]/ideas/%[coveo_parent.id]"",
+                  ""Method"": ""GET"",
+                  ""Body"": ""<html>%[content]</html>"",
+                  ""ModifiedDate"": ""%[created_date]"",
+                  ""Metadata"": {
+                    ""spiideacreateddate"": ""%[created_date]""
+                  }
+                },
+                {
+                  ""Path"": ""%[coveo_url]/ideas/%[coveo_parent.id]/comments"",
+                  ""Method"": ""GET"",
+                  ""QueryParameters"": {
+                    ""offset"": ""0"",
+                    ""limit"": ""100"",
+                    ""sort"": ""CREATED_DATE"",
+                    ""answer_status"": ""all""
+                  },
+                  ""Metadata"": {
+                    ""spicommentauthors"": ""%[content[*].creator_display_name]""
+                  }
+                },
+                {
+                  ""Path"": ""%[coveo_url]/ideas/%[coveo_parent.id]/stats"",
+                  ""Method"": ""GET"",
+                  ""Metadata"": {
+                    ""spiideastageid"": ""%[stage_id]"",
+                    ""spiideastagename"": ""%[stage_name]"",
+                    ""spiideacategoryid"": ""%[category_id]"",
+                    ""spiideacategoryname"": ""%[category_name]"",
+                    ""spiideaqualifiedpageview"": ""%[qualified_page_view]"",
+                    ""spiideatotalpageviews"": ""%[total_page_views]"",
+                    ""spiideaoverallstarrating"": ""%[over_all_star_rating]"",
+                    ""spiideacommentthreadnum"": ""%[comment_thread_num]"",
+                    ""spiideacommentrepliesnum"": ""%[comment_replies_num]"",
+                    ""spiideaideateammembernum"": ""%[idea_team_member_num]"",
+                    ""spiideapairwiserank"": ""%[pair_wise_rank]"",
+                    ""spiideareviewnum"": ""%[review_num]"",
+                    ""spiideaavgreviewscore"": ""%[avg_review_score]""
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}",,4.46,46,Coveo Labs,259,2020-04-04,2023-06-07
+Stackoverflow,"A Q&A platform for developers to learn, share knowledge, and build their careers.","Software Development, Technology, Education, Data Science","website, service","Customer Churn Rate, Market Penetration Rate, Employee Performance Index, Sales Conversion Rate",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,This example shows how to index Stack Overflow tagged Questions and Answers.,24,"To fully understand and use this example, you must:
+1. Have a Coveo Platform organization.
+2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
+3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Get your access token credentials](https://api.stackexchange.com/docs/authentication) using the explicit OAuth 2.0 flow.
+2. [Create a REST API source](https://docs.coveo.com/en/1896/) and, in the **Authorization** section, under **API key**, enter your access token.
+3. Use the example in [`SourceJSONConfig.json`](https://github.com/coveooss/connectivity-library/blob/master/Stackoverflow/SourceJSONConfig.json) as a base to build your source JSON configuration. This example uses the main endpoint to get the questions and retrieves the answers as subitems. The main endpoint targets questions with the tags specified in the query parameters. Adjust the configuration example to your own needs.
+4. Make sure you've changed all placeholders in the configuration with your own values.
+5. [Create the appropiate fields and mappings](https://docs.coveo.com/en/1896/#completion).
+6. Check whether your source indexes the desired content properly. You might find you need an [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.",[Stack Overflow API documentation](https://api.stackexchange.com/docs),,"{
+  ""Services"": [
+    {
+      ""Url"": ""http://api.stackexchange.com/2.2"",
+      ""Endpoints"": [
+        {
+          ""Path"": ""/questions"",
+          ""Method"": ""GET"",
+          ""Paging"": {
+            ""PageSize"": 100,
+            ""OffsetStart"": 1,
+            ""OffsetType"": ""page"",
+            ""Parameters"": {
+              ""Limit"": ""pagesize"",
+              ""Offset"": ""page""
+            }
+          },
+          ""QueryParameters"": {
+            ""key"": ""@ApiKey"",
+            ""order"": ""desc"",
+            ""sort"": ""activity"",
+            ""tagged"": ""<<YOUR_TAG>>"",
+            ""site"": ""stackoverflow"",
+            ""filter"": ""withBody""
+          },
+          ""ItemPath"": ""items"",
+          ""ItemType"": ""Question"",
+          ""Uri"": ""%[link]"",
+          ""ClickableUri"": ""%[link]"",
+          ""Title"": ""%[title]"",
+          ""Body"": ""<html><body>%[body]</body></html>"",
+          ""ModifiedDate"": ""%[last_activity_date]"",
+          ""Metadata"": {
+            ""is_answered"": ""%[is_answered]"",
+            ""view_count"": ""%[view_count]"",
+            ""accepted_answer_id"": ""%[accepted_answer_id]"",
+            ""answer_count"": ""%[answer_count]"",
+            ""score"": ""%[score]"",
+            ""last_activity_date"": ""%[last_activity_date]"",
+            ""creation_date"": ""%[creation_date]"",
+            ""question_id"": ""%[question_id]"",
+            ""tags"": ""%[tags[*]]""
+          },
+          ""SubItems"": [
+            {
+              ""Path"": ""/questions/%[coveo_parent.question_id]/answers"",
+              ""Method"": ""GET"",
+              ""QueryParameters"": {
+                ""key"": ""@ApiKey"",
+                ""order"": ""desc"",
+                ""sort"": ""activity"",
+                ""site"": ""stackoverflow"",
+                ""filter"": ""withBody""
+              },
+              ""ItemPath"": ""items"",
+              ""ItemType"": ""Answer"",
+              ""Uri"": ""%[coveo_parent.raw.link]/%[answer_id]#%[answer_id]"",
+              ""ClickableUri"": ""%[coveo_parent.raw.link]/%[answer_id]#%[answer_id]"",
+              ""Body"": ""<html><body>%[body]</body></html>"",
+              ""Metadata"": {
+                ""is_accepted"": ""%[is_accepted]"",
+                ""score"": ""%[score]"",
+                ""last_activity_date"": ""%[last_activity_date]"",
+                ""creation_date"": ""%[creation_date]"",
+                ""answer_id"": ""%[answer_id]"",
+                ""question_id"": ""%[question_id]""
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}",,4.78,44,Coveo Labs,100,2023-06-04,2023-09-16
+UserVoice,A product feedback management software to help gather and analyze customer feedback.,"Technology, E-commerce, Software Development, Customer Service","website, platform","Customer Churn Rate, Customer Satisfaction Score (CSAT), Website Traffic-to-Lead Ratio, Lead-to-Customer Conversion Rate",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,This examples shows you how to indes UserVoice,25,"To fully understand and use this example, you must:
+1. Have a Coveo Platform organization.
+2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
+3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Configure the client](https://developer.uservoice.com/docs/api/api-key/) to get an access token.
+2. [Create a REST API source](https://docs.coveo.com/en/1896/) and, in the **Authorization** section, under **API key**, enter your access token.
+3. Use the example in [`SourceJSONConfig.json`](https://github.com/coveooss/connectivity-library/blob/master/UserVoice/SourceJSONConfig.json) as a base to build your source JSON configuration. Adjust the configuration example to your own needs.
+4. Make sure you've changed all placeholders in the configuration with your own values.
+5. [Create the appropiate fields and mappings](https://docs.coveo.com/en/1896/#completion).
+6. Check whether your source indexes the desired content properly. You might find you need an [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.",[Getting Started with the UserVoice Admin API](https://developer.uservoice.com/docs/api/v2/getting-started/),,"{
+  ""Services"": [
+    {
+      ""Url"": ""https://<<ENTER_YOUR_SUBDOMAIN>>.uservoice.com/api/v1"",
+      ""Paging"": {
+        ""PageSize"": 100,
+        ""OffsetStart"": 1,
+        ""OffsetType"": ""page"",
+        ""Parameters"": {
+          ""Limit"": ""per_page"",
+          ""Offset"": ""page""
+        },
+        ""TotalCountKey"": ""response_data.total_records""
+      },
+      ""Endpoints"": [
+        {
+          ""Path"": ""/suggestions.json"",
+          ""Method"": ""GET"",
+          ""ItemPath"": ""suggestions"",
+          ""ItemType"": ""Suggestion"",
+          ""QueryParameters"": {
+            ""client"": ""@ApiKey""
+          },
+          ""Uri"": ""%[url]"",
+          ""ClickableUri"": ""%[url]"",
+          ""Title"": ""%[title]"",
+          ""Body"": ""%[text]"",
+          ""ModifiedDate"": ""%[updated_at]"",
+          ""SubQueries"": [
+            {
+              ""Path"": ""/forums/%[coveo_parent.raw.topic.forum.id].json"",
+              ""Method"": ""GET"",
+              ""Metadata"": {
+                ""uvprivateforum"": ""%[forum.private]""
+              }
+            }
+          ],
+          ""Metadata"": {
+            ""uvid"": ""%[id]"",
+            ""uvstate"": ""%[state]"",
+            ""uvtext"": ""%[text]"",
+            ""uvformattedtext"": ""%[formatted_text]"",
+            ""uvvotecount"": ""%[vote_count]"",
+            ""uvcommentscount"": ""%[comments_count]"",
+            ""uvcategory"": ""%[category.name]"",
+            ""uvforum"": ""%[topic.forum.name]"",
+            ""author"": ""%[creator.name]"",
+            ""uvcreatedat"": ""%[created_at]"",
+            ""uvupdatedat"": ""%[updated_at]""
+          }
+        }
+      ]
+    }
+  ]
+}",,4.12,21,Coveo Labs,320,2023-07-17,2023-12-24
+Vidyard,"A video platform for businesses, supporting video hosting and analytics.","Marketing, Sales, Education, Corporate Communication","website, commerce, platform","Average Order Value (AOV), Market Penetration Rate, Website Traffic-to-Lead Ratio, Sales Conversion Rate",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,"This example shows how to index content posted from Vidyard, a screen recorder software.",26,"To fully understand how to use this example, you must:
+1. Have a Coveo Platform organization.
+2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
+3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. Obtain crawling credentials: [The Vidyard API](https://developer.vidyard.com/) will allow you to authenticate with the token. The API Token can be found from the side menu, select Admin > API Tokens
+2. [Create a REST API source](https://docs.coveo.com/en/1896/) and, in the **Authorization** section, fill in you username and the API Token obtained in step 1. as the password.
+3. Use the example in [`SourceJSONConfig.json`](SourceJSONConfig.json) as a base to build your source JSON configuration. Adjust it to your own needs. 
+4. [Create the appropiate fields and mappings](https://docs.coveo.com/en/1896/#completion).
+5. Check whether your source indexes the desired content properly. You might find you need an [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.",[Vidyard API documentation](https://developer.vidyard.com/),,"{
+    ""Services"": [
+      {
+        ""Url"": ""https://api.vidyard.com/dashboard/v1"",
+        ""Paging"": {
+          ""PageSize"": 100,
+          ""OffsetStart"": 1,
+          ""OffsetType"": ""page"",
+          ""Parameters"": {
+            ""Limit"": ""per_page"",
+            ""Offset"": ""page""
+          }
+        },
+        ""Endpoints"": [
+          {
+            ""Path"": ""/players"",
+            ""Method"": ""GET"",
+            ""Headers"": {
+              ""accept"": ""application/json""
+            },
+            ""QueryParameters"": {
+              ""auth_token"": ""@ApiKey""
+            },
+            ""ItemType"": ""Player"",
+            ""ItemPath"": ""players"",
+            ""Uri"": ""https://play.vidyard.com/%[uuid]"",
+            ""ClickableUri"": ""https://play.vidyard.com/%[uuid]"",
+            ""Title"": ""%[name]"",
+            ""ModifiedDate"": ""%[created_at]"",
+            ""Body"": ""<html><body>%[description]</body></html>"",
+            ""Metadata"": {
+              ""playerid"": ""%[id]"",
+              ""playeruuid"": ""%[uuid]"",
+              ""lastmod"": ""%[updated_at]"",
+              ""videothumbnail"": ""http://play.vidyard.com/%[uuid].jpg?small=1&amp;""
+            },
+            ""SubItems"": [
+              {
+                ""Path"": ""/players/%[coveo_parent.playerid]"",
+                ""Method"": ""GET"",
+                ""Headers"": {
+                  ""accept"": ""application/json""
+                },
+                ""QueryParameters"": {
+                  ""auth_token"": ""@ApiKey""
+                },
+                ""ItemType"": ""Video"",
+                ""ItemPath"": ""chapters_attributes"",
+                ""Uri"": ""https://play.vidyard.com/%[video_attributes.uuid]"",
+                ""ClickableUri"": ""https://play.vidyard.com/%[video_attributes.uuid]"",
+                ""Title"": ""%[video_attributes.name]"",
+                ""ModifiedDate"": ""%[created_at]"",
+                ""Body"": ""<html><body>%[video_attributes.description]</body></html>"",
+                ""ProcessingAction"": {
+                  ""ActionOnItem"": ""Process"",
+                  ""Condition"": ""%[chapters_attributes]""
+                },
+                ""Metadata"": {
+                  ""chapterid"": ""%[id]"",
+                  ""playerid"": ""%[player_id]"",
+                  ""videoid"": ""%[video_id]"",
+                  ""videoseconds"": ""%[video_attributes.seconds]"",
+                  ""videostatus"": ""%[video_attributes.status]"",
+                  ""videouuid"": ""%[video_attributes.uuid]"",
+                  ""lastmod"": ""%[updated_at]"",
+                  ""videothumbnail"": ""http://play.vidyard.com/%[video_attributes.uuid].jpg?small=1&amp;""
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }",,4.64,21,Coveo Labs,91,2020-10-23,2023-08-13
+Vimeo,"A video-sharing platform offering tools for creators to host, share, and stream videos.","Media, Marketing, Education, Corporate","website, platform, service","Market Penetration Rate, Customer Satisfaction Score (CSAT), Average Order Value (AOV), Website Traffic-to-Lead Ratio",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,This example shows how to index Vimeo videos.,27,"To fully understand and use this example, you must:
+1. Have a Coveo Platform organization.
+2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
+3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Create an application](https://developer.vimeo.com/api/guides/start) and get an access token.
+2. [Create a REST API source](https://docs.coveo.com/en/1896/) and, in the **Authorization** section, under **API key**, enter your access token.
+3. Use the example in [`SourceJSONConfig.json`](https://github.com/coveooss/connectivity-library/blob/master/Vimeo/SourceJSONConfig.json) as a base to build your source JSON configuration. Adjust the configuration example to your own needs.
+4. Make sure you've changed all placeholders in the configuration with your own values.
+5. [Create the appropiate fields and mappings](https://docs.coveo.com/en/1896/#completion).
+6. Check whether your source indexes the desired content properly. You might find you need an [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.",[Vimeo API documentation](https://developer.vimeo.com/api/guides/start),,"{
+    ""Services"": [
+        {
+            ""Url"": ""https://api.vimeo.com/"",
+            ""Paging"": {
+                ""PageSize"": 25,
+                ""OffsetStart"": 1,
+                ""OffsetType"": ""page"",
+                ""Parameters"": {
+                    ""Limit"": ""per_page"",
+                    ""Offset"": ""page""
+                }
+            },
+            ""Endpoints"": [
+                {
+                    ""Headers"": {
+                        ""Authorization"": ""Bearer @ApiKey""
+                    },
+                    ""Path"": ""/users/<<ADD_USERNAME>>/videos"",
+                    ""Method"": ""GET"",
+                    ""ItemPath"": ""data"",
+                    ""ItemType"": ""VimeoVideo"",
+                    ""Uri"": ""%[link]"",
+                    ""ClickableUri"": ""%[link]"",
+                    ""Title"": ""%[name]"",
+                    ""ModifiedDate"": ""%[modified_time]"",
+                    ""Body"": ""%[description]"",
+                    ""Metadata"": {
+                        ""ytembedplayerhtml"": ""%[embed.html]"",
+                        ""link"": ""%[link]"",
+                        ""name"": ""%[name]"",
+                        ""author"": ""%[user.name]"",
+                        ""documenttype"": ""Video"",
+                        ""filetype"": ""VimeoVideo"",
+                        ""vilikecount"": ""%[metadata.connections.likes.total]"",
+                        ""thumbnailurl"": ""%[pictures.sizes[1].link]"",
+                        ""commentcount"": ""%[metadata.connections.comments.total]"",
+                        ""videoduration"": ""%[duration]"",
+                        ""description"": ""%[description]""
+                    }
+                }
+            ]
+        }
+    ]
+}",,4.14,27,Coveo Labs,108,2023-09-14,2023-11-23
+Wistia,"A video hosting service for businesses, focusing on video marketing tools.","Marketing, Media, Technology, Education","website, commerce, platform","Average Order Value (AOV), Market Penetration Rate, Website Traffic-to-Lead Ratio, Customer Satisfaction Score (CSAT)",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,"This example shows how to index content posted from Wistia, a video marketing software.",28,"To fully understand how to use this example, you must:
+1. Have a Coveo Platform organization.
+2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
+3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. Obtain crawling credentials: [The Wistia API](https://wistia.com/support/developers/data-api) supports either Basic Authentication or an access_token API Key. The API key can be found in the API Access section from your account settings.
+2. [Create a REST API source](https://docs.coveo.com/en/1896/) and, in the **Authorization** section, fill in you username and the API key obtained in step 1. as the password.
+3. Use the example in [`SourceJSONConfig.json`](SourceJSONConfig.json) as a base to build your source JSON configuration. Adjust it to your own needs. Wistia maintains a parent/child relationship between Project and Media objects, this leads to a single endpoint to index projects along with SubItem queries to indexed the related media objects.
+4. [Create the appropiate fields and mappings](https://docs.coveo.com/en/1896/#completion).
+5. Check whether your source indexes the desired content properly. You might find you need an [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.",[Wistia API documentation](https://wistia.com/support/developers/data-api),,"{
+    ""Services"": [
+      {
+        ""Url"": ""https://api.wistia.com/v1"",
+        ""Authentication"": {
+          ""Username"": ""@Username"",
+          ""Password"": ""@ApiKey"",
+          ""ForceBasicAuthentication"": ""true""
+        },
+        ""Endpoints"": [
+          {
+            ""Path"": ""/projects.json"",
+            ""ItemType"": ""Projects"",
+            ""Method"": ""GET"",
+            ""Title"": ""%[name]"",
+            ""Body"": ""%[description]"",
+            ""Uri"": ""%[coveo_url]/%[id]"",
+            ""ClickableUri"": ""%[coveo_url]/%[id]"",
+            ""Paging"": {
+              ""PageSize"": 10,
+              ""OffsetStart"": 1,
+              ""OffsetType"": ""item"",
+              ""Parameters"": {
+                ""Limit"": ""per_page"",
+                ""Offset"": ""page""
+              }
+            },
+            ""Metadata"": {
+              ""wsprojecthashedid"": ""%[hashedid]"",
+              ""wsprojectpublicid"": ""%[publicid]"",
+              ""projectid"": ""%[id]"",
+              ""wspublic"": ""%[public]"",
+              ""wsmediacount"": ""%[mediaCount]"",
+              ""created_date"": ""%[created]"",
+              ""modified_date"": ""%[updated]""
+            },
+            ""SubItems"": [
+              {
+                ""Path"": ""/medias.json"",
+                ""ItemType"": ""Video"",
+                ""Method"": ""GET"",
+                ""QueryParameters"": {
+                  ""project_id"": ""%[coveo_parent.projectid]""
+                },
+                ""Uri"": ""%[coveo_url]/%[id]"",
+                ""ClickableUri"": ""%[coveo_url]/%[id]"",
+                ""Title"": ""%[name]"",
+                ""Paging"": {
+                  ""PageSize"": 100,
+                  ""OffsetStart"": 0,
+                  ""OffsetType"": ""item"",
+                  ""Parameters"": {
+                    ""Limit"": ""per_page"",
+                    ""Offset"": ""page""
+                  }
+                },
+                ""Metadata"": {
+                  ""wshashedid"": ""%[hashed_id]"",
+                  ""duration"": ""%[duration]"",
+                  ""progress"": ""%[progress]"",
+                  ""status"": ""%[status]"",
+                  ""thumbnailurl"": ""%[thumbnail.url]"",
+                  ""mediaid"": ""%[id]"",
+                  ""projectid"": ""%[project.id]"",
+                  ""wspublic"": ""%[coveo_parent.wspublic]"",
+                  ""assets"": ""%[assets]"",
+                  ""created_date"": ""%[created]"",
+                  ""modified_date"": ""%[updated]""
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }",,4.94,29,Coveo Labs,243,2022-11-09,2023-10-11
+WorkplaceByFacebook,"A communication tool for organizations, akin to Facebook but for internal use.","Corporate, Non-Profit, Education, Healthcare","workplace, platform","Employee Performance Index, Customer Satisfaction Score (CSAT), Working Capital Ratio, Gross Profit Margin",https://cdn-assets-us.frontify.com/s3/frontify-enterprise-files-us/eyJwYXRoIjoiY29udGVudGZ1bFwvZmlsZVwvdDFoV3BKZ2tVRlVNQVhaejFQeWkucG5nIn0:contentful:Bby6koLDgVROLAMXrOIVyitxnrK2vNDu0ButZmhFdW0,This shows how to index Workplace by Facebook.,29,"To fully understand how to use this example, you must:
+1. Have a Coveo Platform organization.
+2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
+3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Create a Custom Integration into Workplace by Facebook](https://developers.facebook.com/docs/workplace/custom-integrations-new/).
+2. Make sure the Integration has the following access: Read group content, Read user timeline, Read user email, Read group membership, Read all messages, Create link previews, Read work profile, Manage Knowledge Library content, and Manage work profiles.
+3. Activate the Feature Flag: `Generic rest permissions config`.
+4. To index your Workplace by Facebook content, you will need to [create three REST API sources](https://docs.coveo.com/en/1896/): one for the content that supports incremental indexing, two for the content that does not support incremental indexing. For each source you create, follow steps 4 to 7.
+5. In the **Authentication** section, enter your Workplace by Facebook access token under **API key authentication**.
+6. In the **Content to include** section, paste one of the following configurations:
+    - For your first non incremental indexing source, enter the [NormalConfig.json](./index/NormalConfig.json) configuration.
+    - For your second incremental indexing source, enter the [MembersInfoConfig.json](./index/MembersInfoConfig.json) configuration.
+    - For the incremental indexing source, enter the [IncrementalConfig.json](./index/IncrementalConfig.json) configuration.
+7. (Optional) After saving the source, and you forgot to change the security setting: Now change the [createSecurityProvider.py](./createSecurityProvider.py) script.
+   - Change the `organizationId`, `sourceId` and the `authToken`.
+   - Execute the script. This will create a security provider for your source.
+8. Add the [SecurityConfig.json](./index/SecurityConfig.json) security configuration to the JSON configuration you provided at step 5. 
+9. Ensure you've replaced all placeholders (e.g., `solutions788` in the URIs) in the configuration with your own values.
+10. Once you've create all three sources, [schedule a refresh operation](https://docs.coveo.com/en/1933/) every 10 minutes for your incremental indexing source.
+11. [Add](https://docs.coveo.com/en/1645/) the [FixFacebookURL.py](./FixFacebookURL.py) indexing pipeline extension to your organization.
+12. [Apply this extension](https://docs.coveo.com/en/1936/) to your incremental indexing source.
+13. [Create the appropriate fields and mappings](https://docs.coveo.com/en/1896/#completion).
+14. Check whether your source indexes the desired content properly. You might find you need an additional [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.","* [Meta for Developers: Custom Integrations](https://developers.facebook.com/docs/workplace/custom-integrations-new/)
+* [Meta for Developers: Reference](https://developers.facebook.com/docs/workplace/reference)
+* [Meta for Developers: Graph API Overview](https://developers.facebook.com/docs/graph-api/using-graph-api)
+* [Meta for Developers: Graph API Community](https://developers.facebook.com/docs/workplace/reference/graph-api/community)
+* [GitHub: Workplace From Facebook Platform API samples for Postman](https://github.com/fbsamples/workplace-platform-samples/tree/master/SampleAPIEndpoints/Postman)",,,"# Title: Replace facebook.com url, which should be workplace.com
+
+try:
+    originaluri = document.get_meta_data_value(""originaluri"")[-1]
+    clickableuri = document.get_meta_data_value(""clickableuri"")[-1]
+    printableuri= document.get_meta_data_value(""printableuri"")[-1]
+    uri = document.uri
+    document.add_meta_data(
+        {""originaluri"": originaluri.replace(""facebook.com"", ""workplace.com"")})
+    document.add_meta_data(
+        {""clickableuri"": clickableuri.replace(""facebook.com"", ""workplace.com"")})
+    document.add_meta_data(
+        {""printableuri"": printableuri.replace(""facebook.com"", ""workplace.com"")})
+    document.uri = uri.replace(""facebook.com"", ""workplace.com"")
+except Exception as e:
+    log(str(e))",4.52,45,Coveo Labs,86,2021-08-30,2023-01-10
