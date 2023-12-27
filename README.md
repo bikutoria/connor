@@ -32,8 +32,12 @@ connor/
 
 ## Next steps
 
-#Use Headless Library to front search
-#Pagination of the main page
-#Categories based on industries and/or use case
-#Styling of the [id] page
-#(TBD) Sitemap generation
+Use Headless Library to front search
+
+Pagination of the main page
+
+Categories based on industries and/or use case
+
+Styling of the [id] page
+
+(TBD) Sitemap generation
