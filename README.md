@@ -42,8 +42,6 @@ Categories based on industries and/or use case
 
 Styling of the [id] page
 
-(TBD) Sitemap generation
-
 ## Big future plans
 
 Try indexing with catalog source
