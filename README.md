@@ -32,20 +32,16 @@ connor/
 
 ## Next steps
 
-✅ Add data.csv to index with Push Source
+- ✅ Add data.csv to index with Push Source
+- Use Headless Library to front search
+- Fix overall styling (https://tailwindcss.com/?) 
+- Add pagination or infinite scroll on the main page
+- Fix styling of the [id] page
+- Add filtering/categories based on industries and/or use case
 
-Use Headless Library to front search
-
-Pagination of the main page
-
-Categories based on industries and/or use case
-
-Styling of the [id] page
 
 ## Big future plans
 
-Try indexing with catalog source
-
-Recreate data.csv dynamically using Github API; add contributors
-
-Set up a system to add other connectors that are not part of the repository (i.e. https://exchange.adobe.com/apps/ec/102840/coveo-connector-for-adobe-experience-manager)
+- Try indexing with catalog source
+- Recreate data.csv dynamically using Github API; add contributors
+- Set up a system to add other connectors that are not part of the repository (i.e. https://exchange.adobe.com/apps/ec/102840/coveo-connector-for-adobe-experience-manager)
