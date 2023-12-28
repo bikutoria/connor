@@ -32,7 +32,7 @@ connor/
 
 ## Next steps
 
-Add data.csv to index 
+✅ Add data.csv to index with Push Source
 
 Use Headless Library to front search
 
@@ -45,6 +45,8 @@ Styling of the [id] page
 (TBD) Sitemap generation
 
 ## Big future plans
+
+Try indexing with catalog source
 
 Recreate data.csv dynamically using Github API; add contributors
 
