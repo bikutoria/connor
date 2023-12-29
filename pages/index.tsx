@@ -3,6 +3,10 @@ import { useEffect, useState } from 'react';
 import Papa from 'papaparse';
 import AppCard from '../components/AppCard';
 
+import ReactDOM from "react-dom/client";
+import App from "../src/SearchComponent";
+import React from 'react';
+
 const HomePage = () => {
   const [apps, setApps] = useState([]);
 
@@ -18,10 +22,12 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
+      <App />
       {apps.map((app, index) => (
         <AppCard key={index} app={app} />
       ))}
+  
     </div>
   );
 };
