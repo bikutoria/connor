@@ -28,6 +28,12 @@ const FIELDS = [
   "ec_variant_sku",*/
   "source",
   "permanentid",
+  "app_use_case",
+  "recipe_date_created",
+  "recipe_last_edit_date",
+  "app_recipe_creator",
+  "app_rating",
+  "industries",
 ];
 
 const registerAdditionalFields = (headlessEngine: SearchEngine) => {
@@ -44,8 +50,8 @@ const buildEngine = buildSearchEngine({
       "poclabsplaygroundv6cjujq7"
     ),
     search: {
-      pipeline: "Vic's Newstand",
-      searchHub: "news-stand",
+      pipeline: "connectivity-app-store",
+      searchHub: "connectivity-library",
     },
   },
 });

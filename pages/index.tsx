@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Papa from 'papaparse';
-import AppCard from '../components/AppCard';
+import AppCard from 'src/components/AppCard/AppCard';
 
 import ReactDOM from "react-dom/client";
-import App from "../src/SearchComponent";
+// import App from "../src/SearchComponent";
+import App from "src/SearchComponent";
 import React from 'react';
 
 const HomePage = () => {

@@ -28,9 +28,9 @@ function App() {
           <div className="facet-section column">
             <Facet controller={FacetController} title="Facets" />
           </div>
-          {/*<div className="results-section column">
+          <div className="results-section column">
             <ResultList controller={ResultListController} />
-  </div>*/}
+  </div>
         </div>
       </div>
     </div>

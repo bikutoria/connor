@@ -33,11 +33,12 @@ connor/
 ## Next steps
 
 - ✅ Add data.csv to index with Push Source
-- Use Headless Library to front search
+- ✅ Use Headless Library to front search
 - Fix overall styling (https://tailwindcss.com/?) 
 - Add pagination or infinite scroll on the main page
 - Fix styling of the [id] page
 - Add filtering/categories based on industries and/or use case
+- Code refactoring and clean up (components, I am looking at you)
 
 
 ## Big future plans
