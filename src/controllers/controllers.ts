@@ -11,5 +11,5 @@ export const searchBox: SearchBox = buildSearchBox(headlessEngine);
 export const resultList = buildResultList(headlessEngine);
 
 export const facet = buildFacet(headlessEngine, {
-  options: { field: "source" },
+  options: { field: "app_recipe_creator" },
 });
