@@ -23,12 +23,15 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
-      <App />
-      {apps.map((app, index) => (
-        <AppCard key={index} app={app} />
-      ))}
-  
+    <div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
+        {apps.map((app, index) => (
+          <AppCard key={index} app={app} />
+        ))}
+        </div>
+      <div  style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-evenly' }}>
+        <App />
+        </div>
     </div>
   );
 };
