@@ -7,7 +7,27 @@ import {
 
 
 const FIELDS = [
+  /*"ec_brand",
+  "ec_category",
+  "ec_cogs",
+  "ec_description",
+  "ec_images",
+  "ec_in_stock",
+  "ec_item_group_id",
+  "ec_listing",
+  "ec_name",
+  "ec_parent_id",
+  "ec_price",
+  "ec_product_id",
+  "ec_promo_price",
+  "ec_rating",
+  "ec_reviews",
+  "ec_shortdesc",
+  "ec_skus",
+  "ec_thumbnails",
+  "ec_variant_sku",*/
   "source",
+  "permanentid",
   "app_use_case",
   "recipe_date_created",
   "recipe_last_edit_date",

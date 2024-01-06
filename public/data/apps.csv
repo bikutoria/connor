@@ -2658,3 +2658,10 @@ try:
     document.uri = uri.replace(""facebook.com"", ""workplace.com"")
 except Exception as e:
     log(str(e))",4.52,45,Coveo Labs,86,2021-08-30,2023-01-10
+Coveo for Adobe Experience Manager,"An enterprise Content Management System, a part of Adobe Experience Cloud",,"platform, website, workplace","Sales Conversion Rate, Employee Performance Index, Return on Equity (ROE), Customer Satisfaction Score (CSAT)",https://blog.adobe.com/en/publish/2020/05/28/media_1d87bf78b1ce19defbef0c7858b4df696215a4048.png,The connector will allow authors/admins to configure the Coveo platform and integrate with Adobe AEM.,30,"AEM on prem, AEM Managed Services","Coveo Connectors has the below features
+Indexing AEM Content to Coveo Source(s)
+Creating and Managing Coveo fields
+Identify and create AEM fields which needs to be indexed in Coveo
+Create a mapping between AEM and Coveo fields
+Realtime indexing of AEM content
+Adobe AEM search components using Coveo JS",N/A,N/A,N/A,N/A,4.76,10,TADigital,50,2019-08-27,2019-08-28
