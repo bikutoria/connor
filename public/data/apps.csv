@@ -1,5 +1,5 @@
 App Name,App Description,Industries,App Use Case,Business Value,Logo,Recipe Use Case,ID,Prerequisites,Instructions,Reference,Limitations,Source JSON Configuration,IPE,Rating,Reviews,Created by,Number of installations,Date created,Last edit date
-APP Direct,A cloud service marketplace and management platform.,"Technology, Retail, Telecommunications, Healthcare","platform, service","Revenue Growth Rate, Customer Satisfaction Score (CSAT), Market Penetration Rate, Sales Conversion Rate",https://i.ibb.co/5s6z0rY/DALL-E-2023-12-26-20-12-06-a-generic-software-Saa-S-company-logo-featuring-abstract-shapes-and-moder.png,This example shows how to add products from AppDirect.,1,"To fully understand how to use this example, you must:
+APP Direct,A cloud service marketplace and management platform.,"Technology, Retail, Telecommunications, Healthcare","platform, service","Revenue Growth Rate, Customer Satisfaction Score (CSAT), Market Penetration Rate, Sales Conversion Rate",https://mms.businesswire.com/media/20231128219932/en/1953446/23/AppDirect-Logo_Navy_%281%29.jpg,This example shows how to add products from AppDirect.,1,"To fully understand how to use this example, you must:
 1. Have a Coveo Platform organization.
 2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
 3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Create and configure a REST API source](https://docs.coveo.com/en/1896/) using the example in [SourceJSONConfig.json](https://github.com/coveooss/connectivity-library/blob/master/APP%20Direct/SourceJSONConfig.json). This JSON configuration contains one Endpoint, which gets a list of all products, and one Subquery, which gets more details on the product. Adjust it to your own needs.
@@ -142,7 +142,7 @@ if tags_meta:
 if features_meta:
   features_array = json.loads(features_meta)
   document.add_meta_data({'adp_features' : get_featurelist_list(features_array)})",4.55,40,Coveo Labs,247,2022-02-17,2023-11-21
-Azure Active Directory,Microsoft's cloud-based identity and access management service.,"IT & Services, Financial Services, Healthcare, Education","service, platform","Net Profit Margin, Return on Equity (ROE), Customer Churn Rate, Employee Performance Index",https://i.ibb.co/5s6z0rY/DALL-E-2023-12-26-20-12-06-a-generic-software-Saa-S-company-logo-featuring-abstract-shapes-and-moder.png,This example shows how to index Azure Active Directory users and their information using the Microsoph Graph API.,2,"To fully understand how to use this example, you must:
+Azure Active Directory,Microsoft's cloud-based identity and access management service.,"IT & Services, Financial Services, Healthcare, Education","service, platform","Net Profit Margin, Return on Equity (ROE), Customer Churn Rate, Employee Performance Index",https://static-00.iconduck.com/assets.00/azure-active-directory-aad-icon-488x512-3d71nrtk.png,This example shows how to index Azure Active Directory users and their information using the Microsoph Graph API.,2,"To fully understand how to use this example, you must:
 1. Have a Coveo Platform organization.
 2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
 3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Create an OAuth app and a client secret](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app). Note your client ID and the newly created client secret.
@@ -374,7 +374,7 @@ ClickHelp,A browser-based documentation tool for creating user manuals and help 
     ]
   }
 ",,4.54,50,Coveo Labs,228,2022-05-22,2023-11-16
-Contentful,"A content management platform for web applications, mobile apps and connected devices.","Digital Marketing, Retail, Media, Technology","website, platform","Market Penetration Rate, Customer Churn Rate, Website Traffic-to-Lead Ratio, Average Order Value (AOV)",https://i.ibb.co/5s6z0rY/DALL-E-2023-12-26-20-12-06-a-generic-software-Saa-S-company-logo-featuring-abstract-shapes-and-moder.png,,5,,,,,,,4.42,31,Coveo Labs,342,2020-01-12,2023-11-10
+Contentful,"A content management platform for web applications, mobile apps and connected devices.","Digital Marketing, Retail, Media, Technology","website, platform","Market Penetration Rate, Customer Churn Rate, Website Traffic-to-Lead Ratio, Average Order Value (AOV)",https://miro.medium.com/v2/resize:fit:2400/1*NtrWzJMiOd9VN1OYh78B_A.png,,5,,,,,,,4.42,31,Coveo Labs,342,2020-01-12,2023-11-10
 Contentstack,A headless CMS that enables teams to manage content across digital channels.,"Retail, Technology, Media, Marketing","website, platform","Customer Satisfaction Score (CSAT), Gross Profit Margin, Average Order Value (AOV), Market Penetration Rate",https://i.ibb.co/5s6z0rY/DALL-E-2023-12-26-20-12-06-a-generic-software-Saa-S-company-logo-featuring-abstract-shapes-and-moder.png,This example shows how to index Contentstack. It is based on the sample from Contentstack with Blogs and Authors.,6,"To fully understand how to use this example, you must:
 1. Have a Coveo organization.
 2. Learn about [Coveo connectivity](https://docs.coveo.com/en/1702/).
@@ -927,7 +927,7 @@ Exchange Online,"Microsoft's hosted email service, part of the Office 365 suite.
 7. Make sure you've changed all placeholders in the configuration with your own values.
 8. [Create the appropiate fields and mappings](https://docs.coveo.com/en/1896/#completion).
 9. Check whether your source indexes the desired content properly. You might find you need an additional [indexing pipeline extension](https://docs.coveo.com/en/1645/) to achieve the expected result.",[API documentation](https://docs.microsoft.com/en-us/exchange/client-developer/exchange-web-services/office-365-rest-apis-for-mail-calendars-and-contacts),,,,4.79,20,Coveo Labs,50,2023-02-26,2023-05-23
-Github,A platform for version control and collaboration for software development.,"Software Development, Technology, Education, Startups","platform, service","Employee Performance Index, Gross Profit Margin, Return on Equity (ROE), Market Penetration Rate",https://i.ibb.co/5s6z0rY/DALL-E-2023-12-26-20-12-06-a-generic-software-Saa-S-company-logo-featuring-abstract-shapes-and-moder.png,"
+Github,A platform for version control and collaboration for software development.,"Software Development, Technology, Education, Startups","platform, service","Employee Performance Index, Gross Profit Margin, Return on Equity (ROE), Market Penetration Rate",https://i.pinimg.com/originals/b5/1b/78/b51b78ecc9e5711274931774e433b5e6.png,"
 This example shows how to index GitHub repositories and other content types.",12,"
 To fully understand how to use this example, you must:
 
@@ -1114,7 +1114,7 @@ Google Sheets,A web-based spreadsheet program part of the Google Drive office su
     }
   ]
 }",,4.57,41,Coveo Labs,73,2020-10-02,2023-11-24
-GraphQL,"A query language for APIs, offering a more efficient, powerful and flexible alternative to REST.","Technology, Media, Retail, Finance","platform, service","Customer Satisfaction Score (CSAT), Market Penetration Rate, Return on Assets (ROA), Gross Profit Margin",https://i.ibb.co/5s6z0rY/DALL-E-2023-12-26-20-12-06-a-generic-software-Saa-S-company-logo-featuring-abstract-shapes-and-moder.png,"
+GraphQL,"A query language for APIs, offering a more efficient, powerful and flexible alternative to REST.","Technology, Media, Retail, Finance","platform, service","Customer Satisfaction Score (CSAT), Market Penetration Rate, Return on Assets (ROA), Gross Profit Margin",https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/GraphQL_Logo.svg/800px-GraphQL_Logo.svg.png,"
 This example shows how to index a GraphQL API, using the free Star Wars API.",14,"
 To fully understand how to use this example, you must:
 
@@ -1675,7 +1675,7 @@ Pendo Feedback,A platform for product teams to capture user feedback and improve
     ]
 }
 ",,4.78,35,Coveo Labs,173,2020-10-13,2023-01-22
-Sitecore Content Hub,"A digital experience platform for managing content, marketing, and commerce.","Marketing, Retail, Media, Technology","website, commerce, platform","Website Traffic-to-Lead Ratio, Average Order Value (AOV), Market Penetration Rate, Customer Satisfaction Score (CSAT)",https://i.ibb.co/5s6z0rY/DALL-E-2023-12-26-20-12-06-a-generic-software-Saa-S-company-logo-featuring-abstract-shapes-and-moder.png,This example shows how to index Sitecore Content Hub.,20,"To fully understand how to use this example, you must:
+Sitecore Content Hub,"A digital experience platform for managing content, marketing, and commerce.","Marketing, Retail, Media, Technology","website, commerce, platform","Website Traffic-to-Lead Ratio, Average Order Value (AOV), Market Penetration Rate, Customer Satisfaction Score (CSAT)",https://assets.stickpng.com/images/62bc5a67071dec17849af2fd.png,This example shows how to index Sitecore Content Hub.,20,"To fully understand how to use this example, you must:
 1. Have a Coveo organization.
 2. Learn about [Coveo connectivity](https://docs.coveo.com/en/1702/).
 3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Create a token](https://doc.sitecore.com/ch/en/developers/42/cloud-dev/rest-api--get-token.html) to access the Content Hub REST API.
@@ -1851,7 +1851,7 @@ Skilljar LMS,"A customer training platform that helps businesses onboard, engage
     }
   ]
 }",,4.98,29,Coveo Labs,277,2021-09-29,2023-04-24
-Slack,"A messaging app for teams, enabling collaboration across organizations.","Technology, Corporate, Media, Education","workplace, service","Employee Performance Index, Customer Satisfaction Score (CSAT), Gross Profit Margin, Working Capital Ratio",https://i.ibb.co/5s6z0rY/DALL-E-2023-12-26-20-12-06-a-generic-software-Saa-S-company-logo-featuring-abstract-shapes-and-moder.png,This examples shows you how to index Slack.,22,"To use this example, you must:
+Slack,"A messaging app for teams, enabling collaboration across organizations.","Technology, Corporate, Media, Education","workplace, service","Employee Performance Index, Customer Satisfaction Score (CSAT), Gross Profit Margin, Working Capital Ratio",https://www.pngitem.com/pimgs/m/19-194814_slack-new-logo-icon-transparent-slack-icon-hd.png,This examples shows you how to index Slack.,22,"To use this example, you must:
 1. Have a Coveo Platform organization.
 2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
 3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Create a Slack bot application](https://api.slack.com/authentication/basics#calling).
