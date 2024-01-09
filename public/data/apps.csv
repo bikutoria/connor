@@ -1,5 +1,5 @@
 App Name,App Description,Industries,App Use Case,Business Value,Logo,Recipe Use Case,ID,Prerequisites,Instructions,Reference,Limitations,Source JSON Configuration,IPE,Rating,Reviews,Created by,Number of installations,Date created,Last edit date
-APP Direct,A cloud service marketplace and management platform.,"Technology, Retail, Telecommunications, Healthcare","platform, service","Revenue Growth Rate, Customer Satisfaction Score (CSAT), Market Penetration Rate, Sales Conversion Rate",https://mms.businesswire.com/media/20231128219932/en/1953446/23/AppDirect-Logo_Navy_%281%29.jpg,This example shows how to add products from AppDirect.,1,"To fully understand how to use this example, you must:
+APP Direct,A cloud service marketplace and management platform.,"Technology, Retail, Telecommunications, Healthcare","platform, service","Revenue Growth Rate, Customer Satisfaction Score (CSAT), Market Penetration Rate, Sales Conversion Rate",https://asset.brandfetch.io/idbA6Tl6Jh/idPFGjB7w5.jpeg,This example shows how to add products from AppDirect.,1,"To fully understand how to use this example, you must:
 1. Have a Coveo Platform organization.
 2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
 3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Create and configure a REST API source](https://docs.coveo.com/en/1896/) using the example in [SourceJSONConfig.json](https://github.com/coveooss/connectivity-library/blob/master/APP%20Direct/SourceJSONConfig.json). This JSON configuration contains one Endpoint, which gets a list of all products, and one Subquery, which gets more details on the product. Adjust it to your own needs.
@@ -236,7 +236,7 @@ Azure Active Directory,Microsoft's cloud-based identity and access management se
   ]
 }
 ",,4.72,43,Coveo Labs,144,2020-03-27,2023-09-02
-Azure DevOps,"A set of development tools for software teams, including CI/CD, repositories, and project tracking.","Software Development, IT & Services, Finance, Manufacturing","platform, service","Employee Performance Index, Operating Cash Flow, Earnings Before Interest and Taxes (EBIT), Sales Conversion Rate",https://i.ibb.co/5s6z0rY/DALL-E-2023-12-26-20-12-06-a-generic-software-Saa-S-company-logo-featuring-abstract-shapes-and-moder.png,This example shows how to index Azure DevOps.,3,"To fully understand how to use this example, you must:
+Azure DevOps,"A set of development tools for software teams, including CI/CD, repositories, and project tracking.","Software Development, IT & Services, Finance, Manufacturing","platform, service","Employee Performance Index, Operating Cash Flow, Earnings Before Interest and Taxes (EBIT), Sales Conversion Rate",https://logowik.com/content/uploads/images/azure-devops1866.jpg,This example shows how to index Azure DevOps.,3,"To fully understand how to use this example, you must:
 1. Have a Coveo Platform organization.
 2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
 3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. Make sure you have an Azure DevOps account that has access to everything.
@@ -375,7 +375,7 @@ ClickHelp,A browser-based documentation tool for creating user manuals and help 
   }
 ",,4.54,50,Coveo Labs,228,2022-05-22,2023-11-16
 Contentful,"A content management platform for web applications, mobile apps and connected devices.","Digital Marketing, Retail, Media, Technology","website, platform","Market Penetration Rate, Customer Churn Rate, Website Traffic-to-Lead Ratio, Average Order Value (AOV)",https://miro.medium.com/v2/resize:fit:2400/1*NtrWzJMiOd9VN1OYh78B_A.png,,5,,,,,,,4.42,31,Coveo Labs,342,2020-01-12,2023-11-10
-Contentstack,A headless CMS that enables teams to manage content across digital channels.,"Retail, Technology, Media, Marketing","website, platform","Customer Satisfaction Score (CSAT), Gross Profit Margin, Average Order Value (AOV), Market Penetration Rate",https://i.ibb.co/5s6z0rY/DALL-E-2023-12-26-20-12-06-a-generic-software-Saa-S-company-logo-featuring-abstract-shapes-and-moder.png,This example shows how to index Contentstack. It is based on the sample from Contentstack with Blogs and Authors.,6,"To fully understand how to use this example, you must:
+Contentstack,A headless CMS that enables teams to manage content across digital channels.,"Retail, Technology, Media, Marketing","website, platform","Customer Satisfaction Score (CSAT), Gross Profit Margin, Average Order Value (AOV), Market Penetration Rate",https://yt3.googleusercontent.com/ytc/AIf8zZRkiqyQDo24Vu62AFrQ6lVOI0VwzDrNPgnB0-ax=s900-c-k-c0x00ffffff-no-rj,This example shows how to index Contentstack. It is based on the sample from Contentstack with Blogs and Authors.,6,"To fully understand how to use this example, you must:
 1. Have a Coveo organization.
 2. Learn about [Coveo connectivity](https://docs.coveo.com/en/1702/).
 3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Log in to Contentstack](https://app.contentstack.com/).
@@ -470,7 +470,7 @@ Contentstack,A headless CMS that enables teams to manage content across digital 
   ]
 }
 ",,4.65,38,Coveo Labs,354,2022-02-09,2023-09-24
-Cornerstone,"A cloud-based learning, talent management, and talent experience software.","Human Resources, Education, Finance, Healthcare","workplace, platform","Employee Performance Index, Return on Assets (ROA), Customer Satisfaction Score (CSAT), Working Capital Ratio",https://i.ibb.co/5s6z0rY/DALL-E-2023-12-26-20-12-06-a-generic-software-Saa-S-company-logo-featuring-abstract-shapes-and-moder.png,This example shows how to index Cornerstone.,7,"To fully understand how to use this example, you must:
+Cornerstone,"A cloud-based learning, talent management, and talent experience software.","Human Resources, Education, Finance, Healthcare","workplace, platform","Employee Performance Index, Return on Assets (ROA), Customer Satisfaction Score (CSAT), Working Capital Ratio",https://pentagram-production.imgix.net/1795d458-31ff-46b8-b318-7aa597d75efe/01_Cornerstone_LogoAnimationcopy.jpg,This example shows how to index Cornerstone.,7,"To fully understand how to use this example, you must:
 1. Have a Coveo Platform organization.
 2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
 3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Register an application](https://apiexplorer.csod.com/apiconnectorweb/apiexplorer#/info).
@@ -753,7 +753,7 @@ Discourse,An open-source discussion platform for community management.,"Technolo
         }
     ]
 }",,4.89,48,Coveo Labs,148,2023-01-09,2023-09-26
-Docebo LMS,A learning management system for online training and learning.,"Corporate Training, Education, IT & Services, Healthcare","workplace, platform","Employee Performance Index, Customer Satisfaction Score (CSAT), Return on Equity (ROE), Sales Conversion Rate",https://i.ibb.co/5s6z0rY/DALL-E-2023-12-26-20-12-06-a-generic-software-Saa-S-company-logo-featuring-abstract-shapes-and-moder.png,"This example shows how to index courses, learning content (courses content) and learning plans from Docebo LMS.",9,,"1. Ask Docebo administrator to create an API app for Coveo (OAuth 2.0 protocol). You'll need a client ID and a client secret. For more information, see [Activating and Managing the SSO and API App](https://www.docebo.com/knowledge-base/how-to-activate-and-manage-the-sso-and-api-app/) and [APIs Authentication](https://www.docebo.com/knowledge-base/authentication-api-ssp-app-grant-types/). **Important:** With the new 7.0 APIs (found at `<<YOUR_LMS>>.docebosaas.com/api-browser/`), the system also requires a specific user permission.
+Docebo LMS,A learning management system for online training and learning.,"Corporate Training, Education, IT & Services, Healthcare","workplace, platform","Employee Performance Index, Customer Satisfaction Score (CSAT), Return on Equity (ROE), Sales Conversion Rate",https://omniplexlearning.com/wp-content/uploads/2021/12/docebo-logo.png,"This example shows how to index courses, learning content (courses content) and learning plans from Docebo LMS.",9,,"1. Ask Docebo administrator to create an API app for Coveo (OAuth 2.0 protocol). You'll need a client ID and a client secret. For more information, see [Activating and Managing the SSO and API App](https://www.docebo.com/knowledge-base/how-to-activate-and-manage-the-sso-and-api-app/) and [APIs Authentication](https://www.docebo.com/knowledge-base/authentication-api-ssp-app-grant-types/). **Important:** With the new 7.0 APIs (found at `<<YOUR_LMS>>.docebosaas.com/api-browser/`), the system also requires a specific user permission.
 2. Try generating an access token with Postman or any other REST client. Example with ""password"" grant type (`<<YOUR_LMS>>.docebosaas.com/oauth2/token`).
 3. Test your access token with the course endpoint `<<YOUR_LMS>>.docebosaas.com/api/learn/v1/courses`.
 4. [Create a REST API source](https://docs.coveo.com/en/1896/) and, in the **Authorization** section, provide your client ID, client secret, and credentials.
@@ -879,7 +879,7 @@ Docebo LMS,A learning management system for online training and learning.,"Corpo
     }
   ]
 }",,4.96,22,Coveo Labs,92,2020-02-02,2023-08-22
-DynamoDB,Amazon's fully managed NoSQL database service.,"Technology, Retail, Gaming, Finance","platform, service","Operating Cash Flow, Gross Profit Margin, Inventory Turnover Rate, Return on Assets (ROA)",https://i.ibb.co/5s6z0rY/DALL-E-2023-12-26-20-12-06-a-generic-software-Saa-S-company-logo-featuring-abstract-shapes-and-moder.png,This example shows how to index DynamoDB.,10,"In order to fully understand and use this example, you must:
+DynamoDB,Amazon's fully managed NoSQL database service.,"Technology, Retail, Gaming, Finance","platform, service","Operating Cash Flow, Gross Profit Margin, Inventory Turnover Rate, Return on Assets (ROA)",https://upload.wikimedia.org/wikipedia/commons/f/fd/DynamoDB.png,This example shows how to index DynamoDB.,10,"In order to fully understand and use this example, you must:
 1. Have a Coveo Platform organization.
 2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
 3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Create an Amazon API gateway](https://aws.amazon.com/blogs/compute/using-amazon-api-gateway-as-a-proxy-for-dynamodb/)to provide a REST service to your DynamoDB.
@@ -916,7 +916,7 @@ DynamoDB,Amazon's fully managed NoSQL database service.,"Technology, Retail, Gam
       }
    ]
 }",,4.38,20,Coveo Labs,251,2023-04-21,2023-09-07
-Exchange Online,"Microsoft's hosted email service, part of the Office 365 suite.","Corporate, Government, Education, Healthcare","workplace, service","Employee Performance Index, Net Profit Margin, Working Capital Ratio, Customer Churn Rate",https://i.ibb.co/5s6z0rY/DALL-E-2023-12-26-20-12-06-a-generic-software-Saa-S-company-logo-featuring-abstract-shapes-and-moder.png,This example shows how to a index Exchange Online shared mailbox or a user's mailbox using the Microsoph Graph API.,11,"To fully understand how to use this example, you must:
+Exchange Online,"Microsoft's hosted email service, part of the Office 365 suite.","Corporate, Government, Education, Healthcare","workplace, service","Employee Performance Index, Net Profit Margin, Working Capital Ratio, Customer Churn Rate",https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Microsoft_Exchange_%282019-present%29.svg/2346px-Microsoft_Exchange_%282019-present%29.svg.png,This example shows how to a index Exchange Online shared mailbox or a user's mailbox using the Microsoph Graph API.,11,"To fully understand how to use this example, you must:
 1. Have a Coveo Platform organization.
 2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
 3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Create an OAuth app and a client secret](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app). Note your client ID and the newly created client secret.
@@ -1031,7 +1031,7 @@ To fully understand how to use this example, you must:
   ]
 }
 ",,4.53,24,Coveo Labs,93,2022-03-17,2023-04-16
-Google Sheets,A web-based spreadsheet program part of the Google Drive office suite.,"All industries, especially Corporate, Education, Small Business, Non-Profit","workplace, service","Operating Cash Flow, Working Capital Ratio, Employee Performance Index, Sales Conversion Rate",https://i.ibb.co/5s6z0rY/DALL-E-2023-12-26-20-12-06-a-generic-software-Saa-S-company-logo-featuring-abstract-shapes-and-moder.png,This examples shows you how to index the information on a Google Sheet.,13,"To fully understand how to use this example, you must:
+Google Sheets,A web-based spreadsheet program part of the Google Drive office suite.,"All industries, especially Corporate, Education, Small Business, Non-Profit","workplace, service","Operating Cash Flow, Working Capital Ratio, Employee Performance Index, Sales Conversion Rate",https://res-academy.cache.wpscdn.com/images/seo_posts/20230712/8c8778f27c807ce6df55e8839c56d611.png,This examples shows you how to index the information on a Google Sheet.,13,"To fully understand how to use this example, you must:
 1. Have a Coveo Platform organization.
 2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
 3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Create a new Google Cloud Platform project](https://console.developers.google.com/).
@@ -1209,7 +1209,7 @@ LearnUpon,"An LMS that helps organizations train their employees, partners, and 
       }
     ]
   }",,4.07,26,Coveo Labs,180,2023-10-27,2023-11-12
-LinkedIn Learning,An online learning platform offering video courses taught by industry experts.,"Professional Development, Education, Corporate, Technology","workplace, platform","Employee Performance Index, Customer Satisfaction Score (CSAT), Market Penetration Rate, Gross Profit Margin",https://i.ibb.co/5s6z0rY/DALL-E-2023-12-26-20-12-06-a-generic-software-Saa-S-company-logo-featuring-abstract-shapes-and-moder.png,This example shows how to index LinkedIn Learning.,16,"In order to fully understand how to use this example, you must:
+LinkedIn Learning,An online learning platform offering video courses taught by industry experts.,"Professional Development, Education, Corporate, Technology","workplace, platform","Employee Performance Index, Customer Satisfaction Score (CSAT), Market Penetration Rate, Gross Profit Margin",https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/LinkedIn_icon.svg/2048px-LinkedIn_icon.svg.png,This example shows how to index LinkedIn Learning.,16,"In order to fully understand how to use this example, you must:
 1. Have a Coveo Platform organization.
 2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
 3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. Ensure you have access to LinkedIn Learning APIs. They are available for organizations that have purchased LinkedIn Learning site licenses.
@@ -1544,7 +1544,7 @@ def get_modified_date():
     document.add_meta_data({'date':date_date})
  
 get_modified_date()",4.83,37,Coveo Labs,272,2021-05-03,2023-04-17
-Pendo Feedback,A platform for product teams to capture user feedback and improve product experiences.,"Software Development, Technology, E-commerce, Marketing","platform, service","Customer Churn Rate, Customer Satisfaction Score (CSAT), Market Penetration Rate, Lead-to-Customer Conversion Rate",https://i.ibb.co/5s6z0rY/DALL-E-2023-12-26-20-12-06-a-generic-software-Saa-S-company-logo-featuring-abstract-shapes-and-moder.png,This example shows how to retrieve Features(cases) submit to the [Pendo Feedback](https://app.pendo.io/) platform and the comments on each Feature.,19,"To fully understand how to use this example, you must:
+Pendo Feedback,A platform for product teams to capture user feedback and improve product experiences.,"Software Development, Technology, E-commerce, Marketing","platform, service","Customer Churn Rate, Customer Satisfaction Score (CSAT), Market Penetration Rate, Lead-to-Customer Conversion Rate",https://slack-files2.s3-us-west-2.amazonaws.com/avatars/2018-05-21/367054431217_c1171ad7d53786bed618_512.png,This example shows how to retrieve Features(cases) submit to the [Pendo Feedback](https://app.pendo.io/) platform and the comments on each Feature.,19,"To fully understand how to use this example, you must:
 1. Have a Coveo Platform organization.
 2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
 3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Get a Pendo Feeback API key](https://support.pendo.io/hc/en-us/articles/360042025452-Salesforce-Integration-Setup-for-Feedback#h_6cb2d977-ee2b-4b8f-aa24-66455c2d4b9d).
@@ -1774,7 +1774,7 @@ Sitecore Content Hub,"A digital experience platform for managing content, market
       }
     ]
   }",,4.87,24,Coveo Labs,132,2023-07-28,2023-11-26
-Skilljar LMS,"A customer training platform that helps businesses onboard, engage, and retain customers.","Corporate Training, Technology, Education, Sales","workplace, platform","Employee Performance Index, Customer Satisfaction Score (CSAT), Return on Assets (ROA), Sales Conversion Rate",https://i.ibb.co/5s6z0rY/DALL-E-2023-12-26-20-12-06-a-generic-software-Saa-S-company-logo-featuring-abstract-shapes-and-moder.png,This example shows how to index Skilljar training content.,21,"In order to fully understand and use this example, you must:
+Skilljar LMS,"A customer training platform that helps businesses onboard, engage, and retain customers.","Corporate Training, Technology, Education, Sales","workplace, platform","Employee Performance Index, Customer Satisfaction Score (CSAT), Return on Assets (ROA), Sales Conversion Rate",https://www.skilljar.com/wp-content/uploads/2019/12/skilljar-favicon.png,This example shows how to index Skilljar training content.,21,"In order to fully understand and use this example, you must:
 1. Have a Coveo Platform organization.
 2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
 3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","The two typical objects that get indexed are:
@@ -2400,7 +2400,7 @@ UserVoice,A product feedback management software to help gather and analyze cust
     }
   ]
 }",,4.12,21,Coveo Labs,320,2023-07-17,2023-12-24
-Vidyard,"A video platform for businesses, supporting video hosting and analytics.","Marketing, Sales, Education, Corporate Communication","website, commerce, platform","Average Order Value (AOV), Market Penetration Rate, Website Traffic-to-Lead Ratio, Sales Conversion Rate",https://i.ibb.co/5s6z0rY/DALL-E-2023-12-26-20-12-06-a-generic-software-Saa-S-company-logo-featuring-abstract-shapes-and-moder.png,"This example shows how to index content posted from Vidyard, a screen recorder software.",26,"To fully understand how to use this example, you must:
+Vidyard,"A video platform for businesses, supporting video hosting and analytics.","Marketing, Sales, Education, Corporate Communication","website, commerce, platform","Average Order Value (AOV), Market Penetration Rate, Website Traffic-to-Lead Ratio, Sales Conversion Rate",https://www.productboard.com/wp-content/uploads/2020/06/vidyard.png,"This example shows how to index content posted from Vidyard, a screen recorder software.",26,"To fully understand how to use this example, you must:
 1. Have a Coveo Platform organization.
 2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
 3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. Obtain crawling credentials: [The Vidyard API](https://developer.vidyard.com/) will allow you to authenticate with the token. The API Token can be found from the side menu, select Admin > API Tokens
@@ -2481,7 +2481,7 @@ Vidyard,"A video platform for businesses, supporting video hosting and analytics
       }
     ]
   }",,4.64,21,Coveo Labs,91,2020-10-23,2023-08-13
-Vimeo,"A video-sharing platform offering tools for creators to host, share, and stream videos.","Media, Marketing, Education, Corporate","website, platform, service","Market Penetration Rate, Customer Satisfaction Score (CSAT), Average Order Value (AOV), Website Traffic-to-Lead Ratio",https://i.ibb.co/5s6z0rY/DALL-E-2023-12-26-20-12-06-a-generic-software-Saa-S-company-logo-featuring-abstract-shapes-and-moder.png,This example shows how to index Vimeo videos.,27,"To fully understand and use this example, you must:
+Vimeo,"A video-sharing platform offering tools for creators to host, share, and stream videos.","Media, Marketing, Education, Corporate","website, platform, service","Market Penetration Rate, Customer Satisfaction Score (CSAT), Average Order Value (AOV), Website Traffic-to-Lead Ratio",https://seeklogo.com/images/V/vimeo-icon-logo-441934AEB1-seeklogo.com.png,This example shows how to index Vimeo videos.,27,"To fully understand and use this example, you must:
 1. Have a Coveo Platform organization.
 2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
 3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. [Create an application](https://developer.vimeo.com/api/guides/start) and get an access token.
@@ -2534,7 +2534,7 @@ Vimeo,"A video-sharing platform offering tools for creators to host, share, and 
         }
     ]
 }",,4.14,27,Coveo Labs,108,2023-09-14,2023-11-23
-Wistia,"A video hosting service for businesses, focusing on video marketing tools.","Marketing, Media, Technology, Education","website, commerce, platform","Average Order Value (AOV), Market Penetration Rate, Website Traffic-to-Lead Ratio, Customer Satisfaction Score (CSAT)",https://i.ibb.co/5s6z0rY/DALL-E-2023-12-26-20-12-06-a-generic-software-Saa-S-company-logo-featuring-abstract-shapes-and-moder.png,"This example shows how to index content posted from Wistia, a video marketing software.",28,"To fully understand how to use this example, you must:
+Wistia,"A video hosting service for businesses, focusing on video marketing tools.","Marketing, Media, Technology, Education","website, commerce, platform","Average Order Value (AOV), Market Penetration Rate, Website Traffic-to-Lead Ratio, Customer Satisfaction Score (CSAT)",https://wistia.com/static/images/logos/wistia-flags.png,"This example shows how to index content posted from Wistia, a video marketing software.",28,"To fully understand how to use this example, you must:
 1. Have a Coveo Platform organization.
 2. Learn about [Coveo Connectivity](https://docs.coveo.com/en/1702/).
 3. Learn [how to configure a REST API source](https://docs.coveo.com/en/1896/).","1. Obtain crawling credentials: [The Wistia API](https://wistia.com/support/developers/data-api) supports either Basic Authentication or an access_token API Key. The API key can be found in the API Access section from your account settings.
