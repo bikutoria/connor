@@ -40,14 +40,19 @@ connor/
 
 - ✅ Add data.csv to index with Push Source
 - ✅ Use Headless Library to front search
-- Fix styling of the [id] page
-- Fix overall styling (https://tailwindcss.com/?) 
-- Add pagination or infinite scroll on the main page
-- Add filtering/categories based on industries and/or use case
-- Code refactoring and clean up (components, I am looking at you)
-- Define essential metadata (protocol of acceptance) that a partner's page needs to be a part of the library
+- Add commerce events and trackers
+- Enable embeddings on the source
+- Add a CIU category for RT context
+- Define essential metadata (protocol of acceptance) that a partner's page needs to be a part of the library for supplier quality management
 - Define events that needs to be tracked on the app for connectivity product decision-making
 
+## Mid-term
+
+- Fix overall styling (https://tailwindcss.com/?), especially [id] page
+- Add pagination or infinite scroll on the main page
+- Discuss a submission protocol for [id] page for supplier management
+- Add filtering/categories based on industries and/or use case
+- Code refactoring and clean up (components, I am looking at you)
 
 ## Big future plans
 
